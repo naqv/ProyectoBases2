@@ -1,109 +1,175 @@
+CREATE OR REPLACE TYPE telefono_t AS OBJECT (codigo NUMBER(3),numero NUMBER(7));CREATE OR REPLACE TYPE telefonos_tab AS VARRAY(3) OF telefono_t;
 
-CREATE TYPE coordenada_t AS type(??
+CREATE OR REPLACE TYPE coordenada_t AS type(
 
+angulo  NUMERIC(20),
+minuto  NUMERIC(20),
+segundo NUMERIC(20));
 
-/////se crea el tipo coordenada
-
-)
-
-
-CREATE TYPE ruta_t AS OBJECT(
+CREATE TABLE coordenada_table OF coordenada_t;  
+CREATE TYPE OR REPLACE ruta_t AS OBJECT(
   nombre          VARCHAR(100), 
   inicioLatitud   coordenada_t,
   inicioLongitud  coordenada_t,
   finLatitud      coordenada_t,
   finLongitud     coordenada_t,
   cantidadVisitas INTEGER(100),
+  tipo VARCHAR(20) -- Dinamica o fija
+  propuestaFija BOOLEAN -- PUEDE SER NULL
   fechaIngreso    DATE,
-  descripcion     TEXT);
+  descripcion     TEXT,
+  estaEn REF ciudad_t,
+  rutaEn REF hito_t
+  incluye REF paquete --- Puede ser null
+
   
+ -- No tengo idea como hacer el toma .
+);
   
+CREATE TABLE ruta_table OF ruta_t;
  
-  CREATE TYPE via_t AS OBJECT(
+
+
+CREATE OR REPLACE TYPE via_t AS OBJECT(
   nombre           VARCHAR(100)
-  tipo:            ?????????
+  tipo             VARCHAR(50)
   tiposTransporte   (multivaluado)
   inicioLatitud     coordenada_t,
   inicioLongitud    coordenada_t,
   finLatitud        coordenada_t,
-  finLongintud      coordenada_t);
+  finLongintud      coordenada_t,
+  seEncuentraen REF Ciudad_t,
+  tieneServicio REF Servicio_t,
+  Es            REF hito_t
+  seAccedePor   REF hito_t);
   
-  
-  CREATE TYPE hito-t AS OBJECT(
+ CREATE TABLE via_table OF via_t;
+
+  CREATE OR REPLACE TYPE hito_t AS OBJECT(
   
   nombre       VARCHAR(100)
   latitud      coordenada_t
   longitud     coordenada_t
   altitud      coordenada_t
   descripcion  TEXT
-  estado
-  categoria
+  estado       VARCHAR(50)
+  categoria    VARCHAR(50)
   edadApropiada   INTEGER(10)
-  paginaweb       
-  telefono     ...
-  email          ...
-  tarifadescuent    ....
+  paginaweb      VARCHAR(30) 
+  telefono       telefonos_tab
+  email          VARCHAR(50)
+  -- tarifadescuent    
   costoTicketMonedaLocal .
   fotoDireccion
   horario        ....
+  contiene REF hito_t
+  seAccedePor REF via_t
+  tiene REF Servicio_t
+  rutaEn REF ruta_t
+  Es REF via_t
   )
   
+  CREATE TABLE hito_table OF hito_t;
   
-  CREATE TYPE Evento_t AS OBJECT( 
+  CREATE OR REPLACE TYPE Evento_t AS OBJECT( 
   nombre  VARCHAR(100),
-  categoria
+  categoria      
   costoMonedaLocal
   descripcion  TEXT
   
   );
   
+  CREATE TABLE evento_table OF Evento_t;
   
-  CREATE TYPE AS Ciudad_t AS OBJECT (
+  CREATE OR REPLACE TYPE AS Ciudad_t AS OBJECT (
   nombre  VARCHAR(100),
   pais    VARCHAR(100),
-  nombreMonedaLocal
-  relacionLocalUSD
-  
-  
+  nombreMonedaLocal VARCHAR(30),
+  relacionLocalUSD  NUMERIC(30)
+  estaEn REF ruta_t
+  seencuentraen REF via_t
   );
   
-  CREATE TYPE Servicio_T AS OBJECT (  
+  CREATE TABLE ciudad_table OF Ciudad_t;
+
+
+  CREATE OR REPLACE TYPE Servicio_T AS OBJECT (  
   nombre  VARCHAR(100),
-  categoria
-  numeroDeContacto
-  emial
+  categoria VARCHAR(100),
+  numeroDeContacto telefono_t,
+  emaill
   paginaweb
-  descripcion
-  dirccion
-  esGratuito
+  descripcion TEXT
+  direccion   VARCHAR(100)   
+  esGratuito  BOOLEAN
   latitud     coordenada_t,
-  longitud    coordenada_t);
+  longitud    coordenada_t,
+  tieneServicio REF Servicio_t,
+  tiene REF hito_t);[NOT FINAL]
+
+  CREATE TABLE servicio_table OF servicio_t;
+
+
+ CREATE OR REPLACE TYPE rutafija_t AS OBJECT (
+ 
+ incluye REF paquete
+  );
   
-  CREATE TYPE paquete_t AS OBJECT (
+ CREATE TABLE rutafija_table OF rutafija_t;
+
+
+
+ CREATE OR REPLACE TYPE rutadinamica_t AS OBJECT (
+ propuestaFija BOOLEAN 
+
+  );
+  
+ CREATE TABLE rutadinamica_table OF rutadinamica_t;
+
+
+
+
+
+
+
+  
+  CREATE OR REPLACE TYPE paquete_t AS OBJECT UNDER servicio_t (
   nombre          VARCHAR(100),
-  costoEstudiante
+  costoEstudiante 
   costoEstandar
-  costoTerceraEdad
-  costoNIno
-  descripcion    TEXT);
+  costoTerceraEdad 
+  costoNino      
+  descripcion    TEXT
+  incluye REF ruta_t);
   
-  CREATE TABLE usuario_t AS OBJECT(
+  CREATE TABLE paquete_table OF paquete_t;
+
+
+  --CREATE TABLE usuario_t AS OBJECT(
   
-  alias   VARCHAR(100)
-  nombres ..PODRIAMOS CREAR UN TYPE NOMBRE QUE TENGA YA NOMBRE Y APELLIDO...
-  apellidos
-  email
-  contrasena
-  genero
-  fechaNacimiento  DATE,
-  esEstudiante     BOOLEAN,
-  interes
-  biografia        TEXT);
+  --alias   VARCHAR(100)
+  --nombres ..PODRIAMOS CREAR UN TYPE NOMBRE QUE TENGA YA NOMBRE Y APELLIDO...
+  --apellidos
+  --email
+  --contrasena       
+  --genero           VARCHAR(20)
+  --fechaNacimiento  DATE,
+  --esEstudiante     BOOLEAN,
+  --interes          
+  --biografia        TEXT);
   
-  CREATE TABLE valoracion_t AS OBJECT (
+
+
+  CREATE OR REPLACE  TABLE valoracion_t AS OBJECT (
   
-  nivelSeguridad
-  relacionPrecioValor
-  puntuacion    
+  nivelSeguridad  INTEGER(1),
+  relacionPrecioValor INTEGER(1),
+  puntuacion          INTEGER(1),
   comentario   TEXT);
+
+  CREATE TABLE valoracion_table OF valoracion_t;
+
+------ PARTE 2
+
+
   
