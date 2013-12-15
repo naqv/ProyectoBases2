@@ -172,4 +172,92 @@ CREATE OR REPLACE TYPE via_t AS OBJECT(
 ------ PARTE 2
 
 
+
+CREATE OR REPLACE TYPE Contiene AS OBJECT (
+REF hito_t);
+
+
+
+CREATE OR REPLACE TYPE Contrata AS OBJECT (
+  tipo VARCHAR(30) -- Multivaluado 
+  numero INTEGER(20)
+  REF usuario_t
+  REF paquete_t);
+ 
+CREATE OR REPLACE TYPE Crea AS OBJECT(
+
+  REF usuario_t
+  REF ruta_t
+)  
+
+
+CREATE OR REPLACE TYPE AS OBJECT
+  REF via_t
+  REF hito_t
+
+
+
+CREATE OR REPLACE TYPE EstaEn AS OBJECT(
+  REF ruta_t
+  REF Ciudad_t
+
+
+CREATE OR REPLACE TYPE Incluye AS OBJECT(
+  REF paquete_t
+  REF ruta_t  -- Especificar que es de tipo= fija
+ 
+ 
+ 
+CREATE OR REPLACE TYPE Ocurre AS OBJECT (
+  FechaInicio DATE
+  FechaFin DATE
+ REF evento_t
+  REF hito_t
+  
+
+
+CREATE OR REPLACE TYPE RutaEn AS OBJECT(
+  REF hito_t
+
+CREATE OR REPLACE TYPE SeAccedePor AS OBJECT(
+  REF hito_t
+  REF via_t
+
+CREATE OR REPLACE TYPE SeEncuentra AS OBJECT(
+  REF via_t
+  REF Ciudad_T
+
+
+CREATE OR REPLACE TYPE Tiene AS OBJECT(
+  REF hito_t
+  REF servicio_t
+  
+CREATE OR REPLACE TYPE TieneServicio AS OBJECT(
+  REF servicio_t
+
+
+CREATE OR REPLACE TYPE Toma AS OBJECT(
+  REF usuario_T
+  REF ruta_t
+  EsAprobada BOOLEAN
+  HoraInicio: TIME
+  HoraFin: TIME
+
+CREATE OR REPLACE TYPE ValoraCiudad AS OBJECT (
+REF usuario_t
+REF valoracion_t
+REF Ciudad_T
+
+CREATE OR REPLACE TYPE ValoraHito AS OBJECT(
+REF usuario_t
+REF valoracion_t
+REF hito_T
+
+CREATE OR REPLACE TYPE ValoraRuta AS OBJECT(
+REF usuario_t
+REF valoracion_t
+REF ruta_t
+
+
+
   
