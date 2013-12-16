@@ -2,37 +2,50 @@
 --- 1 1…cualquiera
 --- n m no tengo que colocar nada.
 
-CREATE OR REPLACE TYPE telefono_t AS OBJECT (codigo NUMBER(3),numero NUMBER(7));CREATE OR REPLACE TYPE telefonos_tab AS VARRAY(3) OF telefono_t;
+CREATE OR REPLACE TYPE telefono_t AS OBJECT(codigo NUMBER(3),numero NUMBER(7));
 
-CREATE OR REPLACE TYPE coordenada_t AS type(
+CREATE TABLE telefonos_tab OF telefono_t;
 
-angulo  NUMERIC(20),
-minuto  NUMERIC(20),
-segundo NUMERIC(20));
+CREATE OR REPLACE TYPE coordenada_t AS OBJECT(angulo NUMERIC(20),minuto NUMERIC(20),segundo NUMERIC(20));
 
 CREATE TABLE coordenada_table OF coordenada_t;  
-CREATE TYPE OR REPLACE ruta_t AS OBJECT(
-  nombre          VARCHAR(100), 
-  inicioLatitud   coordenada_t,
-  inicioLongitud  coordenada_t,
-  finLatitud      coordenada_t,
-  finLongitud     coordenada_t,
-  cantidadVisitas INTEGER(100),
-  tipo VARCHAR(20) -- Dinamica o fija
-  propuestaFija BOOLEAN -- PUEDE SER NULL
-  fechaIngreso    DATE,
-  descripcion     TEXT,
- ,
- -- rutaEn REF hito_t
- -- incluye REF paquete --- Puede ser null
 
+CREATE OR REPLACE TYPE ruta_t AS OBJECT(nombre VARCHAR(100),inicioLatitud coordenada_t,inicioLongitud coordenada_t,finLatitud coordenada_t,finLongitud coordenada_t,cantidadVisitas INTEGER(20),tipo VARCHAR(20),propuestaFija NUMBER(2),fechaIngreso DATE,descripcion VARCHAR(500));
   
- -- No tengo idea como hacer el toma .
-);
+ -- incluye REF paquete -- Puede ser null, esto hay que ponerlo luego. Falta esto.
+ 
+CREATE TABLE ruta_table OF ruta_t(PRIMARY KEY(nombre),CONSTRAINT cont_tip CHECK(tipo IN('dinamica','fija')));
+ 
+ 
+ CREATE OR REPLACE TYPE hito_t AS OBJECT(
+  nombre       VARCHAR(100),
+  latitud      coordenada_t,
+  longitud     coordenada_t,
+  altitud      coordenada_t,
+  descripcion  VARCHAR(500),-- Seria bueno text, pero no lo quiere agarrar
+  estado       VARCHAR(50),
+  --categoria    VARCHAR(50) AQUI FALTA VER COMO SON LOS CONTRAINT DE COSAS QUE DEBERIAN SER ARRAYS
+  edadApropiada   INTEGER(10),
+  paginaweb      VARCHAR(30),
+  telefono       telefono_t,
+  email          VARCHAR(50),
+  rutaEn REF ruta_t);
   
-CREATE TABLE ruta_table OF ruta_t
+  -- tarifadescuent    
+  --costoTicketMonedaLocal .
+  --fotoDireccion
+  --horario        ....
+  --contiene REF hito_t,
 
-;
+   
+ CREATE TABLE hito_table OF hito_t(CONSTRAINT cont_estado CHECK(estado IN('disponible','en reparacion','clausurado temporalmente')),PRIMARY KEY(nombre),foreing key(nombre) REFERENCES ruta_table(nombre) ON DELETE CASCADE);
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
 
 
@@ -44,45 +57,24 @@ CREATE OR REPLACE TYPE via_t AS OBJECT(
   inicioLongitud    coordenada_t,
   finLatitud        coordenada_t,
   finLongintud      coordenada_t,
+  Es            REF hito_t);
   
-  tieneServicio REF Servicio_t,
-  Es            REF hito_t,
-  seAccedePor   REF hito_t,
-
-CONSTRAINT cont_tipvia CHECK( tipo IN (calle, avenida, caminerıa, autopista,elevado, camino, puente))
-
-);
-  
- CREATE TABLE via_table OF via_t;
+ CREATE TABLE via_table OF via_t(
  
-  CREATE OR REPLACE TYPE hito_t AS OBJECT(
+ CONSTRAINT cont_tipvia CHECK(tipo IN('calle','avenida','caminerıa','autopista','elevado','camino','puente')),
+ FOREING key(Es) references hito_table);
+ 
+ 
+ 
+ 
   
-  nombre       VARCHAR(100),
-  latitud      coordenada_t,
-  longitud     coordenada_t,
-  altitud      coordenada_t,
-  descripcion  TEXT,
-  estado       VARCHAR(50)
-  categoria    VARCHAR(50) -- AQUI FALTA VER COMO SON LOS CONTRAINT DE COSAS QUE DEBERIAN SER ARRAYS
-  edadApropiada   INTEGER(10),
-  paginaweb      VARCHAR(30) ,
-  telefono       telefonos_tab,
-  email          VARCHAR(50),
-  -- tarifadescuent    
-  --costoTicketMonedaLocal .
-  --fotoDireccion
-  --horario        ....
-  contiene REF hito_t,
-  seAccedePor REF via_t,
-  tiene REF Servicio_t,
-  rutaEn REF ruta_t,
-  Es REF via_t,
 
-   CONSTRAINT cont_estado CHECK( estado IN (disponible, en reparacion ,clausurado temporalmente))
-
-  );
   
-  CREATE TABLE hito_table OF hito_t;
+  
+
+  
+  
+  
   
   CREATE OR REPLACE TYPE Evento_t AS OBJECT( 
   nombre  VARCHAR(100),
@@ -213,10 +205,6 @@ hito_table REF hito_t);
 
 
 
-
-OBJECTO : PAQUETE -------------- OBJETO USUARIO. paquete_t paquete_table . usuario_t . usuario_table
-
-
 CREATE OR REPLACE TYPE Contrata AS OBJECT (
   --tipo VARCHAR(30) -- Multivaluado 
   numero INTEGER(20)
@@ -227,6 +215,8 @@ CREATE OR REPLACE TYPE Contrata AS OBJECT (
 CREATE TABLE contrata_in OF Contrata(
 
 foreign key(paquete) references paquete_table, foreign key (usuario) references usuario_table); 
+
+
 -- Duda…es 1:N pero se creo porque tiene argumentos :/
 CREATE OR REPLACE TYPE Ocurre AS OBJECT (
   FechaInicio DATE
@@ -299,45 +289,6 @@ CREATE OR REPLACE TYPE SeEncuentra AS OBJECT(
   REF Ciudad_T
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-CREATE OR REPLACE TYPE AS OBJECT
-  REF via_t
-  REF hito_t
-
-
-
-
-
-
-
-CREATE OR REPLACE TYPE RutaEn AS OBJECT(
-  REF hito_t
-
-CREATE OR REPLACE TYPE SeAccedePor AS OBJECT(
-  REF hito_t
-  REF via_t
-
-
-
-CREATE OR REPLACE TYPE Tiene AS OBJECT(
-  REF hito_t
-  REF servicio_t
-  
-CREATE OR REPLACE TYPE TieneServicio AS OBJECT(
-  REF servicio_t
-
 -- GENERALIZACION PROBLEMAS NI IDEA. PREGUNTAR
 --CREATE OR REPLACE TYPE Toma AS OBJECT(
 --  REF usuario_T
@@ -347,6 +298,48 @@ CREATE OR REPLACE TYPE TieneServicio AS OBJECT(
 --  HoraFin: TIME
 
 
+CREATE OR REPLACE TYPE Tiene AS OBJECT(
+  hito REF hito_t
+  servicio REF servicio_t
+  
+  );
+  
+ CREATE TABLE Tiene_table OF Tiene(
+ 
+ foreign key(hito) references hito_table, 
+ foreign key (servicio) references servicio_table); 
+  
+
+CREATE TABLE TieneServicio_table OF TieneServicio(
+ 
+ foreign key(servicio) references servicio_table, 
+ foreign key (via) references via_table); 
+  
+CREATE OR REPLACE TYPE SeAccedePor AS OBJECT(
+  hito REF hito_t
+  via  REF via_t
+
+CREATE TABLE SeAccedePor_table OF SeAccedePor(
+ 
+ foreign key(hito) references hito_table, 
+ foreign key (via) references via_table); 
 
 
+-- No se crea porque es N:1
+CREATE OR REPLACE TYPE RutaEn AS OBJECT(
+  REF hito_t
+
+
+-- No se crea porque es N:1
+CREATE OR REPLACE ES TYPE AS OBJECT
+  REF via_t
+  REF hito_t
+
+
+  
+
+
+
+  
+  
   
