@@ -215,16 +215,16 @@ CREATE OR REPLACE TYPE valoracion_t AS OBJECT (
     nivelSeguridad      INTEGER(10),
     relacionPrecioValor INTEGER(10),
     puntuacion          INTEGER(10),
-    comentario          VERCHAR(140)
+    comentario          VARCHAR(140)
 );
 /
 
-CREATE
+CREATE TABLE valoracion_table of valoracion_t(
     CONSTRAINT cont_seguridad CHECK( nivelSeguridad IN (1,2,3,4,5)),
-  CONSTRAINT cont_precioval CHECK( relacionPrecioValor IN (1,2,3,4,5)),
-  CONSTRAINT cont_puntu CHECK( puntuacion IN (1,2,3,4,5)));
+    CONSTRAINT cont_precioval CHECK( relacionPrecioValor IN (1,2,3,4,5)),
+    CONSTRAINT cont_puntu CHECK( puntuacion IN (1,2,3,4,5))
+);
 
-  CREATE TABLE valoracion_table OF valoracion_t;
   
   
   
