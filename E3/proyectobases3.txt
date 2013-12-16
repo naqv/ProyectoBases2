@@ -2,7 +2,11 @@
 --- 1 1…cualquiera
 --- n m no tengo que colocar nada.
 
-CREATE OR REPLACE TYPE telefono_t AS OBJECT(codigo NUMBER(3),numero NUMBER(7));
+
+
+-- TIPOS NUEVOS .
+
+CREATE OR REPLACE TYPE telefono_t AS OBJECT(codigo NUMBER(5),numero NUMBER(7));
 
 CREATE TABLE telefonos_tab OF telefono_t;
 
@@ -10,44 +14,80 @@ CREATE OR REPLACE TYPE coordenada_t AS OBJECT(angulo NUMERIC(20),minuto NUMERIC(
 
 CREATE TABLE coordenada_table OF coordenada_t;  
 
-CREATE OR REPLACE TYPE ruta_t AS OBJECT(nombre VARCHAR(100),inicioLatitud coordenada_t,inicioLongitud coordenada_t,finLatitud coordenada_t,finLongitud coordenada_t,cantidadVisitas INTEGER(20),tipo VARCHAR(20),propuestaFija NUMBER(2),fechaIngreso DATE,descripcion VARCHAR(500));
-  
- -- incluye REF paquete -- Puede ser null, esto hay que ponerlo luego. Falta esto.
- 
-CREATE TABLE ruta_table OF ruta_t(PRIMARY KEY(nombre),CONSTRAINT cont_tip CHECK(tipo IN('dinamica','fija')));
- 
+-- HITO 
  
  CREATE OR REPLACE TYPE hito_t AS OBJECT(
   nombre       VARCHAR(100),
   latitud      coordenada_t,
   longitud     coordenada_t,
   altitud      coordenada_t,
-  descripcion  VARCHAR(500),-- Seria bueno text, pero no lo quiere agarrar
+  descripcion  CLOB(175K),
   estado       VARCHAR(50),
   --categoria    VARCHAR(50) AQUI FALTA VER COMO SON LOS CONTRAINT DE COSAS QUE DEBERIAN SER ARRAYS
-  edadApropiada   INTEGER(10),
+  edadApropiada   INTEGER(2),
   paginaweb      VARCHAR(30),
   telefono       telefono_t,
   email          VARCHAR(50),
-  rutaEn REF ruta_t);
+  horario VARCHAR(50),
+  foto BLOB(1M),
+  horario VARCHAR(50),
+  tarifadescuento VARCHAR(100),
+  costoTickerMonedaLocal NUMERIC(100,5)    
+  );
   
-  -- tarifadescuent    
-  --costoTicketMonedaLocal .
-  --fotoDireccion
-  --horario        ....
-  --contiene REF hito_t,
-
-   
- CREATE TABLE hito_table OF hito_t(CONSTRAINT cont_estado CHECK(estado IN('disponible','en reparacion','clausurado temporalmente')),PRIMARY KEY(nombre),foreing key(nombre) REFERENCES ruta_table(nombre) ON DELETE CASCADE);
- 
- 
- 
- 
- 
- 
- 
+CREATE TABLE hito_table OF hito_t(CONSTRAINT cont_estado CHECK(estado IN('disponible','en reparacion','clausurado temporalmente')));
  
 
+-- CUIDAD
+
+ CREATE OR REPLACE TYPE ciudad_t AS OBJECT (
+  nombre  VARCHAR(100),
+  pais    VARCHAR(100),
+  nombreMonedaLocal VARCHAR(30),
+  relacionLocalUSD  NUMERIC(100,5));
+  
+ CREATE TABLE ciudad_table OF ciudad_t;
+
+
+-- RUTA
+
+
+CREATE OR REPLACE TYPE ruta_t AS OBJECT(
+nombre VARCHAR(100),
+inicioLatitud coordenada_t,
+inicioLongitud coordenada_t,
+finLatitud coordenada_t,
+finLongitud coordenada_t,
+cantidadVisitas INTEGER(20),
+tipo VARCHAR(20),
+propuestaFija NUMBER(2),
+fechaIngreso DATE,
+descripcion VARCHAR(500)
+RutaEn REF hito_t,
+EstaEn REF ciudad_t);
+  
+ 
+ 
+CREATE TABLE ruta_table OF ruta_t(
+PRIMARY KEY(nombre),
+CONSTRAINT cont_tip CHECK(tipo IN('dinamica','fija')),
+FOREIGN KEY(RutaEn) references hito_table,
+FOREIGN KEY(EstaEn) references ciudad_table);
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ -- VIA 
+ 
 
 CREATE OR REPLACE TYPE via_t AS OBJECT(
   nombre           VARCHAR(100),
@@ -57,12 +97,12 @@ CREATE OR REPLACE TYPE via_t AS OBJECT(
   inicioLongitud    coordenada_t,
   finLatitud        coordenada_t,
   finLongintud      coordenada_t,
-  Es            REF hito_t);
+  SeEncuentraEn REF ciudad_t);
   
  CREATE TABLE via_table OF via_t(
  
  CONSTRAINT cont_tipvia CHECK(tipo IN('calle','avenida','caminerıa','autopista','elevado','camino','puente')),
- FOREING key(Es) references hito_table);
+ FOREIGN key(SeEncuentraEn) references ciudad_table);
  
  
  
@@ -72,6 +112,8 @@ CREATE OR REPLACE TYPE via_t AS OBJECT(
   
   
 
+  
+  
   
   
   
@@ -91,21 +133,7 @@ CREATE OR REPLACE TYPE via_t AS OBJECT(
 
 ;
   
-  CREATE OR REPLACE TYPE AS Ciudad_t AS OBJECT (
-  nombre  VARCHAR(100),
-  pais    VARCHAR(100),
-  nombreMonedaLocal VARCHAR(30),
-  relacionLocalUSD  NUMERIC(30)
-  estaEn REF ruta_t
-  seEncuentraEn REF via_t
   
-
- 
-  );
-  
-  CREATE TABLE ciudad_table OF Ciudad_t
-  FOREING KEY (estaEn) references ruta_table
-  FOREING KEY( seEncuentraEn) references Ciudad_table;
 
 
   CREATE OR REPLACE TYPE Servicio_T AS OBJECT (  
@@ -123,6 +151,8 @@ CREATE OR REPLACE TYPE via_t AS OBJECT(
   tiene REF hito_t
   
 
+
+  
 
  CONSTRAINT cont_sercat CHECK( categoría IN (salud, entretenimiento, comida, transporte, estacion de servicio, otros))
 
