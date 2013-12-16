@@ -1,19 +1,29 @@
--- TIPOS NUEVOS .
+
+----------------- TIPOS -------------------
+
+-- Tipo telefono
 CREATE OR REPLACE TYPE telefono_t AS OBJECT(
     codigo      NUMBER(5),
     numero      NUMBER(7)
 );
 /
+
+-- Tipo coordenada
 CREATE OR REPLACE TYPE coordenada_t AS OBJECT(
     angulo      NUMERIC(20),
     minuto      NUMERIC(20),
     segundo     NUMERIC(20)
 );
 /
+
+-- Tipo boolean
 CREATE OR REPLACE TYPE boolean_t AS OBJECT(
     booleano    NUMBER(1)
 );
 /
+
+-- Tipo nombres. Esto engloba los 2 nombres
+-- y los 2 apellidos de un usuario.
 CREATE OR REPLACE TYPE nombres_t AS OBJECT(
     nombre1     VARCHAR(20), 
     nombre2     VARCHAR(20), 
@@ -21,6 +31,8 @@ CREATE OR REPLACE TYPE nombres_t AS OBJECT(
     apellido2   VARCHAR(20)
 );
 /
+
+-- Tipo Hito
 CREATE OR REPLACE TYPE hito_t AS OBJECT(
     nombre                    VARCHAR(100),
     latitud                   coordenada_t,
@@ -41,6 +53,7 @@ CREATE OR REPLACE TYPE hito_t AS OBJECT(
 );
 /
   
+-- Tipo Ciudad
 CREATE OR REPLACE TYPE ciudad_t AS OBJECT (
     nombre              VARCHAR(100),
     pais                VARCHAR(100),
@@ -49,6 +62,21 @@ CREATE OR REPLACE TYPE ciudad_t AS OBJECT (
 );
 /
 
+-- Tipo Usuario
+CREATE OR REPLACE TYPE usuario_t AS OBJECT(
+    alias           VARCHAR(100),
+    nombre          nombres_t,  
+    email           VARCHAR(100),
+    contrasena      VARCHAR(30),       
+    genero          VARCHAR(1),
+    fechaNacimiento DATE,
+    esEstudiante    boolean_t,
+    --interes       (multivaluado) MANEJO DE ARRAYS...         
+    biografia       CLOB
+);
+/
+
+-- Tipo Ruta
 CREATE OR REPLACE TYPE ruta_t AS OBJECT(
     nombre          VARCHAR(100),
     inicioLatitud   coordenada_t,
@@ -64,64 +92,19 @@ CREATE OR REPLACE TYPE ruta_t AS OBJECT(
 )NOT FINAL;
 /
 
-CREATE OR REPLACE TYPE usuario_t AS OBJECT(
-    alias           VARCHAR(100),
-    nombre          nombres_t,  
-    email           VARCHAR(100),
-    contrasena      VARCHAR(30),       
-    genero          VARCHAR(1),
-    fechaNacimiento DATE,
-    esEstudiante    boolean_t,
-    --interes       (multivaluado) MANEJO DE ARRAYS...         
-    biografia       CLOB
-);
-/
-
+-- Tipo Ruta Dinamica
 CREATE OR REPLACE TYPE dinamica_t UNDER ruta_t(
     propuestaFija NUMERIC(1),
     Crea REF usuario_t
 );
 /
  
-CREATE OR REPLACE TYPE fija_t UNDER ruta_t();
+-- Tipo Ruta Fija
+CREATE OR REPLACE TYPE fija_t UNDER ruta_t(
+);
 /
 
-
-CREATE TABLE telefonos_tab OF telefono_t;
-
-CREATE TABLE coordenada_table OF coordenada_t;
-
-CREATE TABLE boolean_table OF boolean_t(
-    CONSTRAINT cont_boolean CHECK(booleano IN(0,1))
-);
-
-CREATE TABLE nombres_table OF nombres_t;
-
-
--- HITO 
-CREATE TABLE hito_table OF hito_t(
-    CONSTRAINT cont_estado CHECK(estado IN('disponible','en reparacion','clausurado temporalmente')),
-    FOREIGN KEY(contiene) references hito_table
-);
- 
-
--- CUIDAD
-CREATE TABLE ciudad_table OF ciudad_t;
-
-
-
--- RUTA
-CREATE TABLE ruta_table OF ruta_t(
-	PRIMARY KEY(nombre),
-	CONSTRAINT cont_tip CHECK(tipo IN('dinamica','fija')),
-	FOREIGN KEY(RutaEn) references hito_table,
-	FOREIGN KEY(EstaEn) references ciudad_table,
-	FOREIGN KEY(Crea)   references usuario_table
-);
-
- -- VIA 
- 
-
+-- Tipo Via
 CREATE OR REPLACE TYPE via_t AS OBJECT(
     nombre              VARCHAR(100),
     tipo                VARCHAR(50),
@@ -132,13 +115,9 @@ CREATE OR REPLACE TYPE via_t AS OBJECT(
     finLongintud        coordenada_t,
     SeEncuentraEn REF   ciudad_t
 );
-  
-CREATE TABLE via_table OF via_t(
-    CONSTRAINT  cont_tipvia CHECK (tipo IN('calle','avenida','caminerıa','autopista','elevado','camino','puente')),
-    FOREIGN     key(SeEncuentraEn) references ciudad_table
-);
-    
--- EVENTO
+/
+
+-- Tipo Evento
 CREATE OR REPLACE TYPE evento_t AS OBJECT( 
     nombre              VARCHAR(100),
     categoria           VARCHAR(100),    
@@ -149,14 +128,9 @@ CREATE OR REPLACE TYPE evento_t AS OBJECT(
     fechaFin            DATE 
 );
 /
-  
-CREATE TABLE evento_table OF evento_t(
-    FOREIGN     key(ocurre) references hito_table,
-    CONSTRAINT  cont_eventocat CHECK( categoria IN ('musical', 'entretenimiento', 'cultural', 'historico', 'social', 'festivo'))
-);
-  
 
-CREATE OR REPLACE TYPE Servicio_T AS OBJECT (  
+-- Tipo Servicio
+CREATE OR REPLACE TYPE servicio_t AS OBJECT (  
     nombre              VARCHAR(100),
     categoria           VARCHAR(100),
     numeroDeContacto    telefono_t,
@@ -172,45 +146,7 @@ CREATE OR REPLACE TYPE Servicio_T AS OBJECT (
 )NOT FINAL;
 /
 
-CREATE TABLE servicio_table OF servicio_t(
-    CONSTRAINT cont_categoria CHECK (categoría IN ('salud', 'entretenimiento', 'comida', 'transporte', 'estacion de servicio', 'otros'))
-);
-
-CREATE OR REPLACE TYPE paquete_t AS OBJECT UNDER servicio_t (
-    nombre              VARCHAR(100),
-    costoEstudiante     VARCHAR(100,5),
-    costoEstandar       VARCHAR(100,5),
-    costoTerceraEdad    VARCHAR(100,5),
-    costoNino           VARCHAR(100,5),      
-    descripcion         CLOB(175K),
-    incluye REF fija_t
-);
-/
-  
-CREATE TABLE paquete_table OF paquete_t(
-    FOREIGN KEY(Incluye) references fija_table)
-); 
-
-
---USUARIO
-CREATE OR REPLACE TYPE usuario_t AS OBJECT(
-    alias           VARCHAR(100),
-    nombre          nombres_t,  
-    email           VARCHAR(100),
-    contrasena      VARCHAR(30),       
-    genero          VARCHAR(1),
-    fechaNacimiento DATE,
-    esEstudiante    boolean_t,
-    --interes       (multivaluado) MANEJO DE ARRAYS...         
-    biografia       CLOB
-);
-/
-
-CREATE TABLE usuario_table OF usuario_t(
-    CONSTRAINT cont_genero CHECK (genero IN ('F', 'M'))
-  
-);
-  
+-- Tipo Valoracion
 CREATE OR REPLACE TYPE valoracion_t AS OBJECT (
     nivelSeguridad      INTEGER(10),
     relacionPrecioValor INTEGER(10),
@@ -219,20 +155,83 @@ CREATE OR REPLACE TYPE valoracion_t AS OBJECT (
 );
 /
 
+-- Falta el tipo de paquete_t
+
+----------------- TABLAS -------------------
+
+-- Tabla Telefono
+CREATE TABLE telefonos_tab OF telefono_t;
+
+-- Tabla Coordenada
+CREATE TABLE coordenada_table OF coordenada_t;
+
+-- Tabla Boolean
+CREATE TABLE boolean_table OF boolean_t(
+    CONSTRAINT cont_boolean CHECK(booleano IN(0,1))
+);
+
+-- Tabla Nombres
+CREATE TABLE nombres_table OF nombres_t;
+
+-- Tabla Hito
+CREATE TABLE hito_table OF hito_t(
+    CONSTRAINT cont_estado CHECK(estado IN('disponible','en reparacion','clausurado temporalmente')),
+    FOREIGN KEY(contiene) references hito_table
+);
+ 
+-- Tabla Ciudad
+CREATE TABLE ciudad_table OF ciudad_t;
+
+-- Tabla Usuario
+CREATE TABLE usuario_table OF usuario_t(
+    CONSTRAINT cont_genero CHECK (genero IN ('F', 'M'))
+  
+);
+
+-- Tabla Ruta
+CREATE TABLE ruta_table OF ruta_t(
+	PRIMARY KEY(nombre),
+	CONSTRAINT cont_tip CHECK(tipo IN('dinamica','fija')),
+	FOREIGN KEY(RutaEn) references hito_table,
+	FOREIGN KEY(EstaEn) references ciudad_table,
+	FOREIGN KEY(Crea)   references usuario_table
+);
+  
+-- Tabla Via
+CREATE TABLE via_table OF via_t(
+    CONSTRAINT  cont_tipvia CHECK (tipo IN('calle','avenida','caminerıa','autopista','elevado','camino','puente')),
+    FOREIGN     key(SeEncuentraEn) references ciudad_table
+);
+    
+-- Tabla Evento
+CREATE TABLE evento_table OF evento_t(
+    FOREIGN     key(ocurre) references hito_table,
+    CONSTRAINT  cont_eventocat CHECK( categoria IN ('musical', 'entretenimiento', 'cultural', 'historico', 'social', 'festivo'))
+);
+  
+-- Tabla Servicio
+CREATE TABLE servicio_table OF servicio_t(
+    CONSTRAINT cont_categoria CHECK (categoría IN ('salud', 'entretenimiento', 'comida', 'transporte', 'estacion de servicio', 'otros'))
+);
+
+-- Tabla Valoracion
 CREATE TABLE valoracion_table of valoracion_t(
     CONSTRAINT cont_seguridad CHECK( nivelSeguridad IN (1,2,3,4,5)),
     CONSTRAINT cont_precioval CHECK( relacionPrecioValor IN (1,2,3,4,5)),
     CONSTRAINT cont_puntu CHECK( puntuacion IN (1,2,3,4,5))
 );
 
-  
-  
-  
-  
+-- Tabla Paquete. Falta el tipo paquete_t
+CREATE TABLE paquete_table OF paquete_t(
+    FOREIGN KEY(Incluye) references fija_table)
+); 
+
+
+
   
   
 
------- PARTE 2
+----------------- PARTE 2 (ASOCIACIONES) ---------------------
 
 
 CREATE OR REPLACE TYPE Contrata AS OBJECT (
