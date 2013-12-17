@@ -119,7 +119,7 @@ CREATE OR REPLACE TYPE fija_t UNDER ruta_t(
 CREATE OR REPLACE TYPE via_t AS OBJECT(
     nombre              VARCHAR(100),
     tipo                VARCHAR(50),
-    -- tiposTransporte  (multivaluado) MANEJO DE ARRAYS...
+    tiposTransporte     multis_t,
     inicioLatitud       coordenada_t,
     inicioLongitud      coordenada_t,
     finLatitud          coordenada_t,
@@ -134,7 +134,7 @@ CREATE OR REPLACE TYPE evento_t AS OBJECT(
     categoria           VARCHAR(100),    
     costoMonedaLocal    NUMERIC(30,5),
     descripcion         CLOB,
-    ocurre              REF hito_t
+    ocurre              REF hito_t,
     fechaInicio         DATE,
     fechaFin            DATE 
 );
@@ -166,7 +166,16 @@ CREATE OR REPLACE TYPE valoracion_t AS OBJECT (
 );
 /
 
--- Falta el tipo de paquete_t
+--CREATE OR REPLACE TYPE paquete_t UNDER servicio_t (
+--  nombre          VARCHAR(100),
+--  costoEstudiante 
+--  costoEstandar
+--  costoTerceraEdad 
+--  costoNino      
+--  descripcion    TEXT
+--  incluye REF ruta_t);
+  
+
 
 ----------------- TABLAS -------------------
 
@@ -204,9 +213,9 @@ CREATE TABLE ruta_table OF ruta_t(
 	PRIMARY KEY(nombre),
 	CONSTRAINT cont_tip CHECK(tipo IN('dinamica','fija')),
 	FOREIGN KEY(RutaEn) references hito_table,
-	FOREIGN KEY(EstaEn) references ciudad_table,
-	FOREIGN KEY(Crea)   references usuario_table
-);
+	FOREIGN KEY(EstaEn) references ciudad_table);
+	-- FOREIGN KEY(Crea)   references usuario_table
+--); Hace falta arreglar esto aqui. Al comentarlo compila al menos xD
   
 -- Tabla Via
 CREATE TABLE via_table OF via_t(
