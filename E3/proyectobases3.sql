@@ -256,30 +256,17 @@ CREATE TABLE paquete_table OF paquete_t(
   
   
 
------------------ PARTE 2 (ASOCIACIONES) ---------------------
+----------------- ASOCIACIONES ---------------------
+----------------- TIPOS-----------------------------
   
 CREATE OR REPLACE TYPE SeAccedePor AS OBJECT(hito REF hito_t,via  REF via_t);
 /
-CREATE TABLE SeAccedePor_table OF SeAccedePor(
- FOREIGN KEY(hito) references hito_table,
- FOREIGN KEY(via) references via_table);
- 
-
 CREATE OR REPLACE TYPE Tiene AS OBJECT(
   hito REF hito_t,
   servicio REF servicio_t);
  / 
-  
- CREATE TABLE Tiene_table OF Tiene(
- FOREIGN KEY(hito) references hito_table,
- FOREIGN KEY(servicio) references servicio_table);
-
 CREATE OR REPLACE TYPE TieneServicio AS OBJECT(servicio REF servicio_t,via REF via_t);
 /  
-
-CREATE TABLE TieneServicio_table OF TieneServicio(
- FOREIGN KEY(servicio) references servicio_table,
- FOREIGN KEY(via) references via_table);
 
  CREATE OR REPLACE TYPE Toma AS OBJECT(
    usuarioToma REF usuario_t,
@@ -287,14 +274,70 @@ CREATE TABLE TieneServicio_table OF TieneServicio(
    esAprobada boolean_t,
    horaInicio time_t,
    horaFin time_t);
-/  
+/
+
+-- TERNARIAS--
+
+CREATE OR REPLACE TYPE ValoraCiudad_t AS OBJECT (
+usuariovaloraciudad REF usuario_t,
+valoracionciudad REF valoracion_t,
+ciudadvalorada REF ciudad_t);
+/
+CREATE OR REPLACE TYPE ValoraHito_t AS OBJECT(
+usuariovalorahito REF usuario_t,
+valoracionhito REF valoracion_t,
+hitovalorado REF hito_t);
+/
+CREATE OR REPLACE TYPE ValoraRuta_t AS OBJECT(
+usuariovaloraruta REF usuario_t,
+valoracionruta REF valoracion_t,
+rutavalorada REF ruta_t);
+/
+
+
+----- TABLAS ----------
+
+CREATE TABLE SeAccedePor_table OF SeAccedePor(
+ FOREIGN KEY(hito) references hito_table,
+ FOREIGN KEY(via) references via_table);
+ 
+
+ CREATE TABLE Tiene_table OF Tiene(
+ FOREIGN KEY(hito) references hito_table,
+ FOREIGN KEY(servicio) references servicio_table);
+
+
+CREATE TABLE TieneServicio_table OF TieneServicio(
+ FOREIGN KEY(servicio) references servicio_table,
+ FOREIGN KEY(via) references via_table);
+  
 
 CREATE TABLE Toma_table OF Toma(
  FOREIGN KEY(usuarioToma) references usuario_table,
  FOREIGN KEY(rutaToma) references ruta_table);
   
   
-  
+-- Tablas Ternarias ---
+
+
+CREATE TABLE ValoraCiudad_table OF ValoraCiudad_t(
+FOREIGN KEY(usuariovaloraciudad) references usuario_table,
+FOREIGN KEY(valoracionciudad) references valoracion_table,
+FOREIGN KEY(ciudadvalorada) references ciudad_table);
+
+CREATE TABLE ValoraHito_table OF ValoraHito_t(
+FOREIGN KEY(usuariovalorahito) references usuario_table,
+FOREIGN KEY(valoracionhito) references valoracion_table,
+FOREIGN KEY(hitovalorado) references hito_table);
+
+CREATE TABLE ValoraRuta_table OF ValoraRuta_t(
+FOREIGN KEY(usuariovaloraruta) references usuario_table,
+FOREIGN KEY(valoracionruta) references valoracion_table,
+FOREIGN KEY(rutavalorada) references ruta_table);
+
+
+
+
 
 
 

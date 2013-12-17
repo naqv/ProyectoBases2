@@ -1,4 +1,7 @@
 
+
+DROP TABLE Toma_table;
+DROP TABLE valoraciudad_table;
 DROP TABLE paquete_table;
 DROP TABLE valoracion_table;
 DROP TABLE evento_table;
@@ -14,6 +17,15 @@ DROP TABLE hito_table CASCADE CONSTRAINTS;
 DROP TABLE usuario_table CASCADE CONSTRAINTS;
 
 -- TYPES
+
+
+DROP TYPE valoraciudad_t;
+DROP TYPE valorahito_t FORCE;
+DROP TYPE valoraruta_t FORCE;
+DROP TYPE Toma;
+DROP TYPE TieneServicio FORCE;
+DROP TYPE Tiene FORCE; 
+DROP TYPE SeAccedePor FORCE;
 DROP TYPE time_t FORCE;
 DROP TYPE paquete_t;
 DROP TYPE valoracion_t;
