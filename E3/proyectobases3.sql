@@ -1,15 +1,14 @@
 
 ----------------- TIPOS -------------------
 
--- Tipo Categoria
 
-CREATE OR REPLACE TYPE categoria_t AS OBJECT(
-nombreCategoria VARCHAR(20));
+-- Tipo Multivaluado
+CREATE OR REPLACE TYPE multi_t AS OBJECT(
+atributomultivaluado VARCHAR(40));
 /
--- Tipo Categorias
-
-CREATE  OR  REPLACE  TYPE  categorias_t  AS  VARRAY(7)  OF categoria_t ;
- /  
+-- Tipo Multivaluado ARRAY
+CREATE OR REPLACE TYPE multis_t AS VARRAY(7) OF multi_t;
+/
 
 -- Tipo telefono
 CREATE OR REPLACE TYPE telefono_t AS OBJECT(
@@ -50,7 +49,7 @@ CREATE OR REPLACE TYPE hito_t AS OBJECT(
     altitud                   coordenada_t,
     descripcion               CLOB,
     estado                    VARCHAR(50),
-    --categoria               VARCHAR(50) AQUI FALTA VER COMO SON LOS CONTRAINT DE COSAS QUE DEBERIAN SER ARRAYS
+    categoria                 multis_t,
     edadApropiada             INTEGER(2),
     paginaweb                 VARCHAR(30),
     telefono                  telefono_t,
@@ -81,7 +80,7 @@ CREATE OR REPLACE TYPE usuario_t AS OBJECT(
     genero          VARCHAR(1),
     fechaNacimiento DATE,
     esEstudiante    boolean_t,
-    --interes       (multivaluado) MANEJO DE ARRAYS...         
+    interes         multis_t,        
     biografia       CLOB
 );
 /
@@ -113,6 +112,8 @@ CREATE OR REPLACE TYPE dinamica_t UNDER ruta_t(
 CREATE OR REPLACE TYPE fija_t UNDER ruta_t(
 );
 /
+
+
 
 -- Tipo Via
 CREATE OR REPLACE TYPE via_t AS OBJECT(
