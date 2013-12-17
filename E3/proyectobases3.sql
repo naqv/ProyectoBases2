@@ -205,9 +205,7 @@ CREATE TABLE ciudad_table OF ciudad_t;
 
 -- Tabla Usuario
 CREATE TABLE usuario_table OF usuario_t(
-    CONSTRAINT cont_genero CHECK (genero IN ('F', 'M'))
-  
-);
+    CONSTRAINT cont_genero CHECK(genero IN ('F', 'M')));
 
 -- Tabla Ruta
 CREATE TABLE ruta_table OF ruta_t(
@@ -215,8 +213,9 @@ CREATE TABLE ruta_table OF ruta_t(
 	CONSTRAINT cont_tip CHECK(tipo IN('dinamica','fija')),
 	FOREIGN KEY(RutaEn) references hito_table,
 	FOREIGN KEY(EstaEn) references ciudad_table);
-	-- FOREIGN KEY(Crea)   references usuario_table
---); Hace falta arreglar esto aqui. Al comentarlo compila al menos xD
+	
+  
+  
   
 -- Tabla Via
 CREATE TABLE via_table OF via_t(
@@ -230,9 +229,11 @@ CREATE TABLE evento_table OF evento_t(
     CONSTRAINT  cont_eventocat CHECK( categoria IN ('musical', 'entretenimiento', 'cultural', 'historico', 'social', 'festivo'))
 );
   
+  
+  
 -- Tabla Servicio
 CREATE TABLE servicio_table OF servicio_t(
-    CONSTRAINT cont_categoria CHECK (categoría IN ('salud', 'entretenimiento', 'comida', 'transporte', 'estacion de servicio', 'otros'))
+    CONSTRAINT cont_categoria CHECK (categoria IN ('salud', 'entretenimiento', 'comida', 'transporte', 'estacion de servicio', 'otros'))
 );
 
 -- Tabla Valoracion
@@ -244,8 +245,7 @@ CREATE TABLE valoracion_table of valoracion_t(
 
 -- Tabla Paquete. Falta el tipo paquete_t
 CREATE TABLE paquete_table OF paquete_t(
-    FOREIGN KEY(Incluye) references fija_table)
-); 
+    FOREIGN KEY(incluye) references ruta_table); 
 
 
 
