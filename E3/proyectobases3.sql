@@ -140,6 +140,7 @@ CREATE OR REPLACE TYPE evento_t AS OBJECT(
 );
 /
 
+
 -- Tipo Servicio
 CREATE OR REPLACE TYPE servicio_t AS OBJECT (  
     nombre              VARCHAR(100),
@@ -147,8 +148,8 @@ CREATE OR REPLACE TYPE servicio_t AS OBJECT (
     numeroDeContacto    telefono_t,
     email               VARCHAR(100),
     paginaweb           VARCHAR(100),
-    descripcion         CLOB(175K),
-    direccion           VARCHAR(100)   
+    descripcion         CLOB,
+    direccion           VARCHAR(100),   
     esGratuito          boolean_t,
     latitud             coordenada_t,
     longitud            coordenada_t,
@@ -166,15 +167,15 @@ CREATE OR REPLACE TYPE valoracion_t AS OBJECT (
 );
 /
 
---CREATE OR REPLACE TYPE paquete_t UNDER servicio_t (
---  nombre          VARCHAR(100),
---  costoEstudiante 
---  costoEstandar
---  costoTerceraEdad 
---  costoNino      
---  descripcion    TEXT
---  incluye REF ruta_t);
-  
+CREATE OR REPLACE TYPE paquete_t UNDER servicio_t (
+  nombrePaquete  VARCHAR(100),
+  costoEstudiante  NUMERIC(30,5),
+  costoEstandar    NUMERIC(30,5),
+  costoTerceraEdad NUMERIC(30,5),
+  costoNino        NUMERIC(30,5),
+  descripcionPaquete    CLOB,
+  incluye REF ruta_t);
+/ 
 
 
 ----------------- TABLAS -------------------
