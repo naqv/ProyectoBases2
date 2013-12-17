@@ -14,7 +14,7 @@ DROP TABLE hito_table CASCADE CONSTRAINTS;
 DROP TABLE usuario_table CASCADE CONSTRAINTS;
 
 -- TYPES
-
+DROP TYPE time_t FORCE;
 DROP TYPE paquete_t;
 DROP TYPE valoracion_t;
 DROP TYPE evento_t;
