@@ -1,0 +1,32 @@
+DROP TABLE usuario_table;
+DROP TABLE hito_table;
+DROP TABLE ruta_table;
+DROP TABLE coordenada_table;
+DROP TABLE telefonos_tab;
+DROP TABLE ciudad_table;
+DROP TABLE boolean_table;
+DROP TABLE nombres_table;
+DROP TABLE evento_table;
+DROP TABLE via_table;
+DROP TABLE servicio_table;
+DROP TABLE valoracion_table;
+DROP TABLE paquete_table;
+-- TYPES
+DROP TYPE multis_t;
+DROP TYPE multi_t;
+DROP TYPE usuario_t;
+DROp TYPE dinamica_t;
+DROP TYPE fija_t;
+DROP TYPE ruta_t;
+DROP TYPE hito_t;
+DROP TYPE coordenada_t;
+DROP TYPE boolean_t;
+DROP TYPE ciudad_t;
+DROP TYPE telefono_t;
+DROP TYPE nombres_t;
+DROP TYPE via_t;
+DROP TYPE evento_t;
+DROP TYPE valoracion_t;
+DROP TYPE servicio_t;
+DROP TYPE paquete_t;
+/
