@@ -1,6 +1,16 @@
 
 ----------------- TIPOS -------------------
 
+-- Tipo Categoria
+
+CREATE OR REPLACE TYPE categoria_t AS OBJECT(
+nombreCategoria VARCHAR(20));
+/
+-- Tipo Categorias
+
+CREATE  OR  REPLACE  TYPE  categorias_t  AS  VARRAY(7)  OF categoria_t ;
+ /  
+
 -- Tipo telefono
 CREATE OR REPLACE TYPE telefono_t AS OBJECT(
     codigo      NUMBER(5),
