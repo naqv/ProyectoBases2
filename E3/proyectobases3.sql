@@ -31,6 +31,10 @@ CREATE OR REPLACE TYPE boolean_t AS OBJECT(
 );
 /
 
+-- Tipo TIME 
+CREATE OR REPLACE TYPE time_t AS OBJECT(hora NUMERIC(30),minuto NUMERIC(30),segundo NUMERIC(30));
+/
+
 -- Tipo nombres. Esto engloba los 2 nombres
 -- y los 2 apellidos de un usuario.
 CREATE OR REPLACE TYPE nombres_t AS OBJECT(
@@ -253,179 +257,42 @@ CREATE TABLE paquete_table OF paquete_t(
   
 
 ----------------- PARTE 2 (ASOCIACIONES) ---------------------
-
-
-CREATE OR REPLACE TYPE Contrata AS OBJECT (
-  --tipo VARCHAR(30) -- Multivaluado 
-  --numero INTEGER(20)
-  paquete  REF paquete_t
-  usuario REF usuario_t);
- 
-
-CREATE TABLE contrata_in OF Contrata(
-
-foreign key(paquete) references paquete_table,\00;
-
-foreign key (usuario) references usuario_table);\00,
-
-
-
   
-CREATE OR REPLACE TYPE SeAccedePor AS OBJECT(
-  hito REF hito_t,
-  via  REF via_t);
-
+CREATE OR REPLACE TYPE SeAccedePor AS OBJECT(hito REF hito_t,via  REF via_t);
+/
 CREATE TABLE SeAccedePor_table OF SeAccedePor(
+ FOREIGN KEY(hito) references hito_table,
+ FOREIGN KEY(via) references via_table);
  
- foreign key(hito) references hito_table,\00P
-
- foreign key (via) references via_table);\00P
-
-
 
 CREATE OR REPLACE TYPE Tiene AS OBJECT(
-  hito REF hito_t
-  servicio REF servicio_t
+  hito REF hito_t,
+  servicio REF servicio_t);
+ / 
   
-  );
-  
-
  CREATE TABLE Tiene_table OF Tiene(
- 
- foreign key(hito) references hito_table,\00P
+ FOREIGN KEY(hito) references hito_table,
+ FOREIGN KEY(servicio) references servicio_table);
 
- foreign key (servicio) references servicio_table);\004
-
-  
-  
-  CREATE OR REPLACE TYPE TieneServicio AS OBJECT(
-servicio REF servicio_t,
-via REF via_t);
-  
-  
+CREATE OR REPLACE TYPE TieneServicio AS OBJECT(servicio REF servicio_t,via REF via_t);
+/  
 
 CREATE TABLE TieneServicio_table OF TieneServicio(
- 
- foreign key(servicio) references servicio_table,\00\00
-
- foreign key (via) references via_table);\00_
-
-  
-  
-
-
-
+ FOREIGN KEY(servicio) references servicio_table,
+ FOREIGN KEY(via) references via_table);
 
  CREATE OR REPLACE TYPE Toma AS OBJECT(
    usuarioToma REF usuario_t,
    rutaToma REF ruta_t,
    esAprobada boolean_t,
-   horaInicio TIME,
-   horaFin TIME);
-  
+   horaInicio time_t,
+   horaFin time_t);
+/  
 
 CREATE TABLE Toma_table OF Toma(
-
- foreign key(usuarioToma) references usuario_table,\004
-
- foreign key (rutaToma) references ruta_table);\00l
-
+ FOREIGN KEY(usuarioToma) references usuario_table,
+ FOREIGN KEY(rutaToma) references ruta_table);
   
-);  
-  
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
---CREATE TABLE Ocurre_table OF Ocurre (
-
---foreign key(evento) references evento_table,\00\00
-foreign key (hito) references hito_table
---)
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-CREATE OR REPLACE TYPE ValoraCiudad AS OBJECT (
-usuario REF usuario_t
-valoracion valoracion_t
-ciudad Ciudad_T
-
-CREATE TABLE ValoraCiudad_table OF Ocurre (
-
-foreign key(usuario) references usuario_table,\00\00
-foreign key (valoracion) references valoracion_table
-foreign key (ciudad) references Ciudad_table
-)
-
-
-CREATE OR REPLACE TYPE ValoraHito AS OBJECT(
-usuario REF usuario_t
-valoracion REF valoracion_t
-hito REF hito_T
-
-CREATE TABLE ValoraHito_table OF Ocurre (
-
-foreign key(usuario) references usuario_table,\00t
-foreign key (valoracion) references valoracion_table
-foreign key (hito) references hito_table
-)
-
-CREATE OR REPLACE TYPE ValoraRuta AS OBJECT(
-REF usuario_t
-REF valoracion_t
-REF ruta_t
-
-
   
   
 
