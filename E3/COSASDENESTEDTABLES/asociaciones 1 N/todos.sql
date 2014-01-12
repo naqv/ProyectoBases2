@@ -16,9 +16,9 @@ CREATE OR REPLACE TYPE boolean_t AS OBJECT(booleano NUMBER(1));
 CREATE OR REPLACE TYPE time_t AS OBJECT(hora NUMERIC(30),minuto NUMERIC(30),segundo NUMERIC(30));
 /
 CREATE OR REPLACE TYPE nombres_t AS OBJECT(
-nombre1 NUMERIC(20),
-nombre2 NUMERIC(20),
-apellido1 NUMERIC(20),
+nombre1 NUMERIC(20), 
+nombre2 NUMERIC(20), 
+apellido1 NUMERIC(20), 
 apellido2 NUMERIC(20));
 /
 CREATE OR REPLACE TYPE hito_t AS OBJECT(
@@ -38,11 +38,12 @@ CREATE OR REPLACE TYPE hito_t AS OBJECT(
   tarifadescuento VARCHAR(100),
   costoTickerMonedaLocal NUMERIC(30,5),
   contiene REF hito_t
+--MEMBER FUNCTION calcularCostoEnUSD(relacionLocalUSD  NUMERIC(30,5)) RETURN NUMERIC(30,5)    
   );
   /
-CREATE OR REPLACE TYPE ciudad_t AS OBJECT (
+CREATE OR REPLACE TYPE ciudad_t AS OBJECT ( 
  nombre  VARCHAR(100),
- pais    VARCHAR(100),
+ pais    VARCHAR(100), 
  nombreMonedaLocal VARCHAR(30),
  relacionLocalUSD  NUMERIC(30,5));
  /
@@ -57,22 +58,31 @@ tipo VARCHAR(20),
 fechaIngreso DATE,
 descripcion VARCHAR(500),
 RutaEn REF hito_t,
-EstaEn REF ciudad_t)NOT FINAL;
+EstaEn REF ciudad_t
+--MEMBER FUNCTION calcularAntiguedad() RETURN DATE
+--MEMBER FUNCTION hallarDuracionAproximada() RETURN time_t 
+)NOT FINAL;
 /
 CREATE OR REPLACE TYPE usuario_t AS OBJECT(
     alias           VARCHAR(100),
-    nombre          nombres_t,
+    nombre          nombres_t,  
     email           VARCHAR(100),
-    contrasena      VARCHAR(30),
+    contrasena      VARCHAR(30),       
     genero          VARCHAR(1),
     fechaNacimiento DATE,
     esEstudiante    boolean_t,
-    interes       multis_t,
+    interes       multis_t,         
     biografia       CLOB
+--MEMBER FUNCTION calcularEdad(fechanac DATE) RETURN NUMERIC(10) 
+--MEMBER FUNCTION esTerceraEdad(fechanac DATE) RETURN boolean_t
 );
 /
-CREATE OR REPLACE TYPE dinamica_t UNDER ruta_t(propuestaFija NUMERIC(1),Crea REF usuario_t);
-/
+CREATE OR REPLACE TYPE dinamica_t UNDER ruta_t(
+propuestaFija NUMERIC(1),
+Crea REF usuario_t
+--MEMBER FUNCTION calcularAprobaciones() RETURN NUMERIC(10)
+);
+/ 
 CREATE OR REPLACE TYPE fija_t UNDER ruta_t();
 /
 -- Tipo Via
@@ -89,25 +99,27 @@ CREATE OR REPLACE TYPE via_t AS OBJECT(
 /
 
 -- Tipo Evento
-CREATE OR REPLACE TYPE evento_t AS OBJECT(
+CREATE OR REPLACE TYPE evento_t AS OBJECT( 
     nombre              VARCHAR(100),
-    categoria           VARCHAR(100),
+    categoria           VARCHAR(100),    
     costoMonedaLocal    NUMERIC(30,5),
     descripcion         CLOB,
     ocurre              REF hito_t,
     fechaInicio         DATE,
-    fechaFin            DATE
+    fechaFin            DATE 
+--MEMBER FUNCTION calcularCostoEnUSD(relacionLocalUSD) NUMERIC(30,5)
 );
 /
+
 -- Tipo Servicio
-CREATE OR REPLACE TYPE servicio_t AS OBJECT (
+CREATE OR REPLACE TYPE servicio_t AS OBJECT (  
     nombre              VARCHAR(100),
     categoria           VARCHAR(100),
     numeroDeContacto    telefono_t,
     email               VARCHAR(100),
     paginaweb           VARCHAR(100),
     descripcion         CLOB,
-    direccion           VARCHAR(100),
+    direccion           VARCHAR(100),   
     esGratuito          boolean_t,
     latitud             coordenada_t,
     longitud            coordenada_t,
@@ -130,12 +142,16 @@ CREATE OR REPLACE TYPE paquete_t UNDER servicio_t (
   costoTerceraEdad NUMERIC(30,5),
   costoNino        NUMERIC(30,5),
   descripcionPaquete    CLOB,
-  incluye REF ruta_t);
-/
+  incluye REF ruta_t
+--MEMBER FUNCTION calcularTarifaMinima() RETURN NUMERIC(30,5)
+);
+/ 
 CREATE OR REPLACE TYPE contrata_t AS OBJECT (
   companero acompanantes_t,
   paquete  REF paquete_t,
-  usuario REF usuario_t);
+  usuario REF usuario_t
+ --MEMBER FUNCTION CalcularPrecioTotal() RETURN NUMERIC(30,5) 
+);
  /
 
 CREATE OR REPLACE TYPE SeAccedePor AS OBJECT(hito REF hito_t,via  REF via_t);
@@ -146,7 +162,8 @@ CREATE OR REPLACE TYPE Tiene AS OBJECT(
  /
 CREATE OR REPLACE TYPE TieneServicio AS OBJECT(servicio REF servicio_t,via REF via_t);
 /
-CREATE OR REPLACE TYPE Toma AS OBJECT(
+
+ CREATE OR REPLACE TYPE Toma AS OBJECT(
    usuarioToma REF usuario_t,
    rutaToma REF ruta_t,
    esAprobada boolean_t,
@@ -170,5 +187,15 @@ CREATE OR REPLACE TYPE ValoraRuta_t AS OBJECT(
 usuariovaloraruta REF usuario_t,
 valoracionruta REF valoracion_t,
 rutavalorada REF ruta_t);
+/
+-- NUevos
+CREATE OR REPLACE TYPE agr_via_t AS OBJECT(
+    ruta    REF ruta_t,
+    via     REF via_t);
+/
+-- Agregacion Ruta-Hito
+CREATE OR REPLACE TYPE agr_hito_t AS OBJECT(
+   ruta    REF ruta_t,
+   hito    REF hito_t);
 /
 

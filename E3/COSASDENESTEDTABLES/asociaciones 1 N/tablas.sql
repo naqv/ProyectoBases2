@@ -15,9 +15,8 @@ CREATE TABLE nombres_table OF nombres_t;
 -- Tabla Hito
 CREATE TABLE hito_table OF hito_t(
     CONSTRAINT cont_estado CHECK(estado IN('disponible','en reparacion','clausurado temporalmente')),
-    FOREIGN KEY(contiene) references hito_table
-);
-
+    FOREIGN KEY(contiene) references hito_table);
+ 
 -- Tabla Ciudad
 CREATE TABLE ciudad_table OF ciudad_t;
 
@@ -27,16 +26,15 @@ CREATE TABLE usuario_table OF usuario_t(
 
 -- Tabla Ruta
 CREATE TABLE ruta_table OF ruta_t(
-        PRIMARY KEY(nombre),
-        CONSTRAINT cont_tip CHECK(tipo IN('dinamica','fija')),
-        FOREIGN KEY(RutaEn) references hito_table,
-        FOREIGN KEY(EstaEn) references ciudad_table);
-
+	CONSTRAINT cont_tip CHECK(tipo IN('dinamica','fija')),
+	FOREIGN KEY(RutaEn) references hito_table,
+	FOREIGN KEY(EstaEn) references ciudad_table);
+	
 -- Tabla Via
 CREATE TABLE via_table OF via_t(
     CONSTRAINT  cont_tipvia CHECK (tipo IN('calle','avenida','caminerıa','autopista','elevado','camino','puente')),
     FOREIGN     key(SeEncuentraEn) references ciudad_table);
-
+    
 -- Tabla Evento
 CREATE TABLE evento_table OF evento_t(
     FOREIGN     key(ocurre) references hito_table,
@@ -53,9 +51,9 @@ CREATE TABLE valoracion_table of valoracion_t(
     CONSTRAINT cont_puntu CHECK( puntuacion IN (1,2,3,4,5))
 );
 
--- Tabla PAquete
+-- Tabla Paquete. Falta el tipo paquete_t
 CREATE TABLE paquete_table OF paquete_t(
-    FOREIGN KEY(incluye) references ruta_table);
+    FOREIGN KEY(incluye) references ruta_table); 
 
 CREATE TABLE contrata_table OF contrata_t(
   FOREIGN KEY(paquete) references paquete_table,
@@ -70,11 +68,12 @@ CREATE TABLE SeAccedePor_table OF SeAccedePor(
  CREATE TABLE Tiene_table OF Tiene(
  FOREIGN KEY(hito) references hito_table,
  FOREIGN KEY(servicio) references servicio_table);
- 
- CREATE TABLE TieneServicio_table OF TieneServicio(
+
+
+CREATE TABLE TieneServicio_table OF TieneServicio(
  FOREIGN KEY(servicio) references servicio_table,
  FOREIGN KEY(via) references via_table);
-
+  
 
 CREATE TABLE Toma_table OF Toma(
  FOREIGN KEY(usuarioToma) references usuario_table,
@@ -98,3 +97,16 @@ CREATE TABLE ValoraRuta_table OF ValoraRuta_t(
 FOREIGN KEY(usuariovaloraruta) references usuario_table,
 FOREIGN KEY(valoracionruta) references valoracion_table,
 FOREIGN KEY(rutavalorada) references ruta_table);
+
+-- AGREGACIONES
+CREATE TABLE agr_via_tablet OF agr_via_t(
+   FOREIGN KEY (ruta) REFERENCES ruta_table,
+   FOREIGN KEY (via) REFERENCES via_table);
+
+CREATE TABLE agr_hito_tablet OF agr_hito_t(
+    FOREIGN KEY (ruta) REFERENCES ruta_table,
+    FOREIGN KEY (hito) REFERENCES hito_table );
+
+
+
+
