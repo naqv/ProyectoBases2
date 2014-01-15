@@ -39,10 +39,7 @@ DROP TYPE time_t;
 DROP TYPE agr_via_t;
 DROP TYPE agr_hito_t;
 DROP TYPE valoracion_t ;
-
-
-
-
+purge recyclebin;
 DROP TYPE telefono_t FORCE;
 DROP TYPE coordenada_t FORCE;
 DROP TYPE nombres_t FORCE;
