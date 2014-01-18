@@ -53,6 +53,6 @@ DROP TYPE via_t;
 DROP TYPE ciudad_t;
 DROP TYPE acompanante_t FORCE;
 DROP TYPE acompanantes_t ;
-drop type refs_to_ruta_table;
+drop type refs_to_ruta;
 drop type refs_to_evento;
 drop type refs_to_via;

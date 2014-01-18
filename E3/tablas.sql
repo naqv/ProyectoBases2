@@ -16,7 +16,7 @@ CREATE TABLE nombres_table OF nombres_t;
 CREATE TABLE hito_table OF hito_t(
     CONSTRAINT cont_estado CHECK(estado IN('disponible','en reparacion','clausurado temporalmente')),
     FOREIGN KEY(contiene) references hito_table)
-    NESTED TABLE ocurreRefs STORE AS EVENTO_OCURRE_HITO
+--    NESTED TABLE ocurreRefs STORE AS EVENTO_OCURRE_HITO
     NESTED TABLE rutaEnRefs STORE AS RUTA_RUTAEN_HITO;
 -- Tabla Ciudad
 CREATE TABLE ciudad_table OF ciudad_t
@@ -30,12 +30,14 @@ CREATE TABLE usuario_table OF usuario_t(
 CREATE TABLE ruta_table OF ruta_t(
 	CONSTRAINT cont_tip CHECK(tipo IN('dinamica','fija')),
 	FOREIGN KEY(RutaEn) references hito_table,
-	FOREIGN KEY(EstaEn) references ciudad_table);
+	FOREIGN KEY(EstaEn) references ciudad_table)
+     NESTED TABLE partesVia STORE AS PARTESVIA_RUTA;
 	
 -- Tabla Via
 CREATE TABLE via_table OF via_t(
     CONSTRAINT  cont_tipvia CHECK (tipo IN('calle','avenida','caminerıa','autopista','elevado','camino','puente')),
-    FOREIGN     key(SeEncuentraEn) references ciudad_table);
+    FOREIGN     key(SeEncuentraEn) references ciudad_table)
+NESTED TABLE todoRuta STORE AS TODORUTA_VIA;
     
 -- Tabla Evento
 CREATE TABLE evento_table OF evento_t(
@@ -101,9 +103,9 @@ FOREIGN KEY(valoracionruta) references valoracion_table,
 FOREIGN KEY(rutavalorada) references ruta_table);
 
 -- AGREGACIONES
-CREATE TABLE agr_via_tablet OF agr_via_t(
-   FOREIGN KEY (ruta) REFERENCES ruta_table,
-   FOREIGN KEY (via) REFERENCES via_table);
+--CREATE TABLE agr_via_tablet OF agr_via_t(
+--   FOREIGN KEY (ruta) REFERENCES ruta_table,
+--   FOREIGN KEY (via) REFERENCES via_table);
 
 CREATE TABLE agr_hito_tablet OF agr_hito_t(
     FOREIGN KEY (ruta) REFERENCES ruta_table,
