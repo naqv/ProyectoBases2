@@ -29,7 +29,8 @@ CREATE OR REPLACE TYPE via_t AS OBJECT(
     inicioLatitud       coordenada_t,
     inicioLongitud      coordenada_t,
     finLatitud          coordenada_t,
-    finLongintud        coordenada_t
+    finLongintud        coordenada_t,
+    numRutas            NUMERIC(10)
 )NOT FINAL;
 /
 
