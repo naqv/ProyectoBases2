@@ -1,12 +1,3 @@
-CREATE OR REPLACE TYPE multi_t AS OBJECT(
-atributomultivaluado VARCHAR(40));
-/
-CREATE OR REPLACE TYPE multis_t AS VARRAY(7) OF multi_t;
-/
-CREATE OR REPLACE TYPE coordenada_t AS OBJECT(angulo NUMERIC(20),minuto NUMERIC(20),segundo NUMERIC(20));
-/
-
-
 CREATE OR REPLACE TYPE via_t AS OBJECT(
     nombre              VARCHAR(100),
     tipo                VARCHAR(50),
