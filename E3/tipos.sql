@@ -56,6 +56,7 @@ CREATE OR REPLACE TYPE via_t AS OBJECT(
   finLatitud                coordenada_t,
   finLongintud              coordenada_t,
   rutasPresentes            NUMERIC(10)
+--  MEMBER FUNCTION viasHitosEnCiudad(ciudad IN VARCHAR) RETURN CURSOR 
 )NOT FINAL;
 /
 
@@ -73,7 +74,8 @@ CREATE OR REPLACE TYPE evento_t AS OBJECT(
   costoMonedaLocal          NUMERIC(30,5),
   descripcion               CLOB,
   fechaInicio               DATE,
-  fechaFin                  DATE
+  fechaFin                  DATE,
+  MEMBER FUNCTION calcularCostoEnUSD (relacionLocalUSD IN NUMERIC) RETURN NUMERIC
 )NOT FINAL;
 /
 
@@ -95,7 +97,11 @@ CREATE OR REPLACE TYPE ruta_t AS OBJECT(
   tipo                      VARCHAR(20),
   fechaIngreso              DATE,
   descripcion               VARCHAR(500),
-  partesVia                 refs_to_via 
+  partesVia                 refs_to_via,
+  MEMBER FUNCTION calcularDuracionPromedio RETURN time_t
+  --MEMBER PROCEDURE agregarRutaConVias (vias IN CURSOR),
+  --MEMBER FUNCTION rutasCiudadServicio (ciudad IN VARCHAR, categoriaServicio IN VARCHAR) RETURN CURSOR,
+  --MEMBER FUNCTION rutasCiudadSeguridad (nivelSeguridad IN NUMERIC) RETURN CURSOR
 )NOT FINAL;
 /
 
@@ -125,7 +131,15 @@ CREATE OR REPLACE TYPE hito_t AS OBJECT(
   horario                   VARCHAR(50),
 --ocurreRefs                refs_to_evento,      
   contiene                  REF hito_t,
-  rutaEnRefs                refs_to_ruta
+  rutaEnRefs                refs_to_ruta,
+  MEMBER FUNCTION calcularCostoEnUSD (relacionLocalUSD IN NUMERIC) RETURN NUMERIC
+  --MEMBER FUNCTION listarEventos RETURN CURSOR,
+  --MEMBER FUNCTION hitosCategoria(categoria IN VARCHAR) RETURN CURSOR,
+  --MEMBER FUNCTION hitosCategoriaCiudad(categoria IN VARCHAR, ciudad IN VARCHAR) RETURN CURSOR,
+  --MEMBER FUNCTION hitosEstadoCiudad(estado IN VARCHAR, ciudad IN VARCHAR) RETURN CURSOR,
+  --MEMBER FUNCTION hitosPorMenorCosto(ciudad IN VARCHAR, costo IN VARCHAR) RETURN CURSOR,
+  --MEMBER FUNCTION hitosPorMayorCosto(ciudad IN VARCHAR, costo IN VARCHAR) RETURN CURSOR,
+  --MEMBER FUNCTION hitosRangoPrecio(ciudad IN VARCHAR, costoMenor IN VARCHAR, costoMayor IN VARCHAR) RETURN CURSOR
 );
 /
 
@@ -148,16 +162,17 @@ CREATE OR REPLACE TYPE usuario_t AS OBJECT(
   fechaNacimiento           DATE,
   esEstudiante              boolean_t,
   interes                   multis_t,         
-  biografia                 CLOB
---MEMBER FUNCTION calcularEdad(fechanac DATE) RETURN NUMERIC(10) 
---MEMBER FUNCTION esTerceraEdad(fechanac DATE) RETURN boolean_t
+  biografia                 CLOB,
+  MEMBER FUNCTION calcularEdad RETURN NUMERIC,
+  MEMBER FUNCTION esTerceraEdad RETURN boolean_t,
+  MEMBER FUNCTION usuarioContratos RETURN NUMERIC
 );
 /
 
 CREATE OR REPLACE TYPE dinamica_t UNDER ruta_t(
   propuestaFija NUMERIC(1),
-  Crea REF usuario_t
---MEMBER FUNCTION calcularAprobaciones() RETURN NUMERIC(10)
+  Crea REF usuario_t,
+  MEMBER FUNCTION calcularAprobaciones RETURN NUMERIC
 );
 / 
 
@@ -197,16 +212,16 @@ CREATE OR REPLACE TYPE paquete_t AS OBJECT(
   costoTerceraEdad          NUMERIC(30,5),
   costoNino                 NUMERIC(30,5),
   descripcionPaquete        CLOB,
-  incluye                   REF ruta_t
---MEMBER FUNCTION calcularTarifaMinima() RETURN NUMERIC(30,5)
+  incluye                   REF ruta_t,
+  MEMBER FUNCTION calcularTarifaMinima RETURN NUMERIC
 );
 / 
 
 CREATE OR REPLACE TYPE contrata_t AS OBJECT (
   companero                 acompanantes_t,
   paquete                   REF paquete_t,
-  usuario                   REF usuario_t
- --MEMBER FUNCTION CalcularPrecioTotal() RETURN NUMERIC(30,5) 
+  usuario                   REF usuario_t,
+  MEMBER FUNCTION CalcularPrecioTotal RETURN NUMERIC
 );
  /
 
