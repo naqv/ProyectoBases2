@@ -129,8 +129,7 @@ CREATE OR REPLACE TYPE hito_t AS OBJECT(
   costoTicketMonedaLocal    NUMERIC(30,5),
   foto                      BLOB,
   horario                   VARCHAR(50),
---ocurreRefs                refs_to_evento,      
-  contiene                  REF hito_t,
+  contieneRef               REF hito_t,
   rutaEnRefs                refs_to_ruta,
   MEMBER FUNCTION calcularCostoEnUSD (relacionLocalUSD IN NUMERIC) RETURN NUMERIC
   --MEMBER FUNCTION listarEventos RETURN CURSOR,
@@ -140,7 +139,15 @@ CREATE OR REPLACE TYPE hito_t AS OBJECT(
   --MEMBER FUNCTION hitosPorMenorCosto(ciudad IN VARCHAR, costo IN VARCHAR) RETURN CURSOR,
   --MEMBER FUNCTION hitosPorMayorCosto(ciudad IN VARCHAR, costo IN VARCHAR) RETURN CURSOR,
   --MEMBER FUNCTION hitosRangoPrecio(ciudad IN VARCHAR, costoMenor IN VARCHAR, costoMayor IN VARCHAR) RETURN CURSOR
+)NOT FINAL;
+/
+
+CREATE OR REPLACE TYPE ref_to_hito AS OBJECT (
+  toHito                    REF hito_t
 );
+/
+
+CREATE OR REPLACE TYPE refs_to_hito AS TABLE OF ref_to_hito;
 /
 
 CREATE OR REPLACE TYPE ciudad_t AS OBJECT ( 
@@ -289,6 +296,8 @@ CREATE OR REPLACE TYPE agr_hito_t AS OBJECT(
 );
 /
 
+
+ALTER TYPE hito_t ADD ATTRIBUTE (contieneNT refs_to_hito) CASCADE;
 ALTER TYPE via_t ADD ATTRIBUTE (seEncuentraEn REF ciudad_t) CASCADE;
 ALTER TYPE ruta_t ADD ATTRIBUTE (estaEn REF ciudad_t) CASCADE;
 ALTER TYPE evento_t ADD ATTRIBUTE (ocurre REF hito_t) CASCADE;

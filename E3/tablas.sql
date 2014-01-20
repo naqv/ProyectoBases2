@@ -103,11 +103,11 @@ FOREIGN KEY(valoracionruta) references valoracion_table,
 FOREIGN KEY(rutavalorada) references ruta_table);
 
 -- AGREGACIONES
---CREATE TABLE agr_via_tablet OF agr_via_t(
+--CREATE TABLE agr_via_table OF agr_via_t(
 --   FOREIGN KEY (ruta) REFERENCES ruta_table,
 --   FOREIGN KEY (via) REFERENCES via_table);
 
-CREATE TABLE agr_hito_tablet OF agr_hito_t(
+CREATE TABLE agr_hito_table OF agr_hito_t(
     FOREIGN KEY (ruta) REFERENCES ruta_table,
     FOREIGN KEY (hito) REFERENCES hito_table );
 
