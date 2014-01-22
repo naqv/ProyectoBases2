@@ -1,7 +1,7 @@
 --EJEMPLOS
 
 INSERT INTO ruta_table (
-  2    ,
+  2    id,
   3    customer,
   4    product
   5  ) VALUES (
@@ -128,12 +128,12 @@ CIUDADES
   finLatitud,                
   finLongintud,             
   rutasPresentes, 
-  todoRuta,  
+  todoRuta,  -- NESTED TABLE QUE SE DEBE BORRADA.
   seEncuentraEn
   )VALUES(
   'viaSantisimaTrinidad',
   'calle',
-   multis_t('taxi'),
+   multis_t(multi_t('taxi')),
    coordenada_t(45,67,89),
    coordenada_t(45,67,89),
    coordenada_t(45,67,89),
