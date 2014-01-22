@@ -5,6 +5,7 @@ DROP TABLE 	tiene_table;
 DROP TABLE 	tieneservicio_table;
 DROP TABLE 	toma_table;
 DROP TABLE 	valoraciudad_table;
+DROP TABLE 	ciudad_table;
 DROP TABLE 	valorahito_table;
 DROP TABLE 	valoraruta_table;
 DROP TABLE 	servicio_table;
@@ -20,7 +21,6 @@ DROP TABLE 	ruta_table;
 DROP TABLE 	via_table;
 DROP TABLE 	evento_table;
 DROP TABLE 	hito_table;
-DROP TABLE 	ciudad_table;
 
 
 
