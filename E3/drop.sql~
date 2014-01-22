@@ -22,7 +22,7 @@ DROP TABLE 	coordenada_table;
 DROP TABLE 	boolean_table;
 DROP TABLE 	nombres_table;
 
-PURGE RECYCLEBIN;
+-- PURGE RECYCLEBIN;
 
 -- Eliminar tipos.
 
