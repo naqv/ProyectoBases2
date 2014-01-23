@@ -1,4 +1,5 @@
--- Eliminar tablas.
+---------------------------- Eliminar tablas ------------------------
+
 DROP TABLE 	contrata_table;
 DROP TABLE 	seaccedepor_table;
 DROP TABLE 	tiene_table;
@@ -24,7 +25,8 @@ DROP TABLE 	nombres_table;
 
 PURGE RECYCLEBIN;
 
--- Eliminar tipos.
+
+---------------------------- Eliminar tipos -------------------------
 
 DROP TYPE 	contrata_t;
 DROP TYPE 	SeAccedePor;
@@ -46,7 +48,6 @@ DROP TYPE 	hito_t FORCE;
 DROP TYPE 	dinamica_t;
 DROP TYPE 	usuario_t;
 DROP TYPE 	telefono_t;
-
 DROP TYPE 	boolean_t;
 DROP TYPE 	nombres_t;
 DROP TYPE 	fija_t;
