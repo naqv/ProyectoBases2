@@ -19,7 +19,7 @@ VALUES('Londres','Ingleterra','Libras',5.30,NULL,NULL);
 
 INSERT INTO via_table
 VALUES('viaSantisimaTrinidad','calle',
-        multis_t('taxi'), 
+        multis_t(multi_t('taxi')), 
         coordenada_t(45,67,89),coordenada_t(45,67,89),coordenada_t(45,67,89),coordenada_t(45,67,89),
         0, NULL,
         (SELECT REF(c) FROM ciudad_table c WHERE c.nombre = 'Caracas'));
