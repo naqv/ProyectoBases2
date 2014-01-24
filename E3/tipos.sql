@@ -177,8 +177,8 @@ CREATE OR REPLACE TYPE usuario_t AS OBJECT(
 /
 
 CREATE OR REPLACE TYPE dinamica_t UNDER ruta_t(
-  propuestaFija NUMERIC(1),
-  Crea REF usuario_t,
+  propuestaFija 	    NUMERIC(1),
+  Crea 			    REF usuario_t,
   MEMBER FUNCTION calcularAprobaciones RETURN NUMERIC
 );
 / 
@@ -282,12 +282,6 @@ CREATE OR REPLACE TYPE ValoraRuta_t AS OBJECT(
   rutavalorada              REF ruta_t
 );
 /
-
--- NUevos
---CREATE OR REPLACE TYPE agr_via_t AS OBJECT(
---    ruta    REF ruta_t,
---    via     REF via_t);
---/
 
 -- Agregacion Ruta-Hito
 CREATE OR REPLACE TYPE agr_hito_t AS OBJECT(

@@ -1,41 +1,4 @@
---EJEMPLOS
-
-INSERT INTO ruta_table (
-  2    id,
-  3    customer,
-  4    product
-  5  ) VALUES (
-  6    1,
-  7    (SELECT REF(oc) FROM object_customers oc WHERE oc.id = 1),
-  8    (SELECT REF(op) FROM object_products  op WHERE op.id = 1)
-  9  );
-
-  
-  CREATE TYPE address_t AS OBJECT (
-   street  VARCHAR2(30),
-   city    VARCHAR2(20),
-   state   CHAR(2),
-   zip     CHAR(5) );
-/
-CREATE TYPE address_tab IS TABLE OF address_t;
-/
-CREATE TABLE customers (
-   custid  NUMBER,
-   address address_tab )
-NESTED TABLE address STORE AS customer_addresses;
-
-INSERT INTO customers VALUES (1,
-            address_tab(
-              address_t('101 First', 'Redwood Shores', 'CA', '94065'),
-              address_t('123 Maple', 'Mill Valley',    'CA', '90952')
-
-  
-
-
-
-
-
-CIUDADES
+--CIUDADES
   
   INSERT INTO ciudad_table(
   nombre,                    --VARCHAR(100),
@@ -52,24 +15,7 @@ CIUDADES
   NULL,
   NULL);
   
-  
-  INSERT INTO ciudad_table(
-  nombre,                    --VARCHAR(100),
-  pais,                      --VARCHAR(100), 
-  nombreMonedaLocal,         --VARCHAR(30),
-  relacionLocalUSD,          --NUMERIC(30,5),
-  seEncuentraEnRefs,         --refs_to_via,
-  estaEnRefs                --refs_to_ruta
-  )VALUES(
-  'Paris',
-  'Francia',
-  'Euro',
-  8.30,
-  NULL,
-  NULL);
-  
-  
-  
+   
   
     INSERT INTO ciudad_table(
   nombre,                    --VARCHAR(100),
@@ -79,7 +25,7 @@ CIUDADES
   seEncuentraEnRefs,         --refs_to_via,
   estaEnRefs                --refs_to_ruta
   )VALUES(
-  'Barcelina',
+  'Barcelona',
   'Espana',
   'Euro',
   8.30,
@@ -101,94 +47,7 @@ CIUDADES
   NULL,
   NULL);
   
-    INSERT INTO ciudad_table(
-  nombre,                    --VARCHAR(100),
-  pais,                      --VARCHAR(100), 
-  nombreMonedaLocal,         --VARCHAR(30),
-  relacionLocalUSD,          --NUMERIC(30,5),
-  seEncuentraEnRefs,         --refs_to_via,
-  estaEnRefs                --refs_to_ruta
-  )VALUES(
-  'Londres',
-  'Ingleterra',
-  'Libras',
-  5.30,
-  NULL,
-  NULL);
-  
-  
-  VIAS
-  
-  INSERT INTO via_table(
-  nombre,                  
-  tipo,
-  tiposTransporte,           
-  inicioLatitud,             
-  inicioLongitud,            
-  finLatitud,                
-  finLongintud,             
-  rutasPresentes, 
-  todoRuta,  -- NESTED TABLE QUE SE DEBE BORRADA.
-  seEncuentraEn
-  )VALUES(
-  'viaSantisimaTrinidad',
-  'calle',
-   multis_t(multi_t('taxi')),
-   coordenada_t(45,67,89),
-   coordenada_t(45,67,89),
-   coordenada_t(45,67,89),
-   coordenada_t(45,67,89),
-   0,
-   NULL,
-   (SELECT REF(c) FROM ciudad_table c WHERE c.nombre = 'Caracas'));
-  
-  INSERT INTO via_table(
-  nombre,                  
-  tipo,
-  tiposTransporte,           
-  inicioLatitud,             
-  inicioLongitud,            
-  finLatitud,                
-  finLongintud,             
-  rutasPresentes, 
-  todoRuta,  
-  seEncuentraEn
-  )VALUES(
-  'ElHatillo',
-  'avenida',
-   multis_t(multi_t('taxi'),multi_t('carro')),
-   coordenada_t(46,67,89),
-   coordenada_t(46,67,89),
-   coordenada_t(46,67,89),
-   coordenada_t(46,67,89),
-   0,
-   NULL,
-   (SELECT REF(c) FROM ciudad_table c WHERE c.nombre = 'Caracas'));
-  
-  
-INSERT INTO via_table(
-  nombre,                  
-  tipo,
-  tiposTransporte,           
-  inicioLatitud,             
-  inicioLongitud,            
-  finLatitud,                
-  finLongintud,             
-  rutasPresentes, 
-  todoRuta,  
-  seEncuentraEn
-  )VALUES(
-  'LaNuezDeAdan',
-  'autopista',
-   multis_t(multi_t('taxi'),multi_t('carro')),
-   coordenada_t(47,67,89),
-   coordenada_t(47,67,89),
-   coordenada_t(47,67,89),
-   coordenada_t(47,67,89),
-   0,
-   NULL,
-   (SELECT REF(c) FROM ciudad_table c WHERE c.nombre = 'Caracas'));
-  
+ -- VIAS
   
   INSERT INTO via_table(
   nombre,                  
@@ -213,7 +72,225 @@ INSERT INTO via_table(
    NULL,
    (SELECT REF(c) FROM ciudad_table c WHERE c.nombre = 'Caracas'));
   
+
+
   
+INSERT INTO via_table(
+  nombre,                  
+  tipo,
+  tiposTransporte,           
+  inicioLatitud,             
+  inicioLongitud,            
+  finLatitud,                
+  finLongintud,             
+  rutasPresentes, 
+  todoRuta,  
+  seEncuentraEn
+  )VALUES(
+  'LaNuezDeAdan',
+  'autopista',
+   multis_t(multi_t('taxi'),multi_t('carro')),
+   coordenada_t(47,67,89),
+   coordenada_t(47,67,89),
+   coordenada_t(47,67,89),
+   coordenada_t(47,67,89),
+   0,
+   NULL,
+   (SELECT REF(c) FROM ciudad_table c WHERE c.nombre = 'Caracas'));
+
+
+  INSERT INTO via_table(
+  nombre,                  
+  tipo,
+  tiposTransporte,           
+  inicioLatitud,             
+  inicioLongitud,            
+  finLatitud,                
+  finLongintud,             
+  rutasPresentes, 
+  todoRuta,  
+  seEncuentraEn
+  )VALUES(
+  'ElHatillo',
+  'avenida',
+   multis_t(multi_t('taxi'),multi_t('carro')),
+   coordenada_t(46,67,89),
+   coordenada_t(46,67,89),
+   coordenada_t(46,67,89),
+   coordenada_t(46,67,89),
+   0,
+   NULL,
+   (SELECT REF(c) FROM ciudad_table c WHERE c.nombre = 'Caracas'));
+  
+
+  INSERT INTO via_table(
+  nombre,                  
+  tipo,
+  tiposTransporte,           
+  inicioLatitud,             
+  inicioLongitud,            
+  finLatitud,                
+  finLongintud,             
+  rutasPresentes, 
+  todoRuta,  -- NESTED TABLE QUE SE DEBE BORRADA.
+  seEncuentraEn
+  )VALUES(
+  'viaSantisimaTrinidad',
+  'calle',
+   multis_t(multi_t('taxi')),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   0,
+   NULL,
+   (SELECT REF(c) FROM ciudad_table c WHERE c.nombre = 'Caracas'));
+  
+
+  INSERT INTO via_table(
+  nombre,                  
+  tipo,
+  tiposTransporte,           
+  inicioLatitud,             
+  inicioLongitud,            
+  finLatitud,                
+  finLongintud,             
+  rutasPresentes, 
+  todoRuta,  -- NESTED TABLE QUE SE DEBE BORRADA.
+  seEncuentraEn
+  )VALUES(
+  'Tazon',
+  'calle',
+   multis_t(multi_t('taxi')),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   0,
+   NULL,
+   (SELECT REF(c) FROM ciudad_table c WHERE c.nombre = 'Caracas'));
+  
+
+  INSERT INTO via_table(
+  nombre,                  
+  tipo,
+  tiposTransporte,           
+  inicioLatitud,             
+  inicioLongitud,            
+  finLatitud,                
+  finLongintud,             
+  rutasPresentes, 
+  todoRuta,  -- NESTED TABLE QUE SE DEBE BORRADA.
+  seEncuentraEn
+  )VALUES(
+  'LaPared',
+  'calle',
+   multis_t(multi_t('taxi')),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   0,
+   NULL,
+   (SELECT REF(c) FROM ciudad_table c WHERE c.nombre = 'Caracas'));
+  
+  INSERT INTO via_table(
+  nombre,                  
+  tipo,
+  tiposTransporte,           
+  inicioLatitud,             
+  inicioLongitud,            
+  finLatitud,                
+  finLongintud,             
+  rutasPresentes, 
+  todoRuta,  -- NESTED TABLE QUE SE DEBE BORRADA.
+  seEncuentraEn
+  )VALUES(
+  'MariPerez',
+  'calle',
+   multis_t(multi_t('taxi')),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   0,
+   NULL,
+   (SELECT REF(c) FROM ciudad_table c WHERE c.nombre = 'Caracas'));
+  
+  INSERT INTO via_table(
+  nombre,                  
+  tipo,
+  tiposTransporte,           
+  inicioLatitud,             
+  inicioLongitud,            
+  finLatitud,                
+  finLongintud,             
+  rutasPresentes, 
+  todoRuta,  -- NESTED TABLE QUE SE DEBE BORRADA.
+  seEncuentraEn
+  )VALUES(
+  'ElCandado',
+  'calle',
+   multis_t(multi_t('taxi')),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   0,
+   NULL,
+   (SELECT REF(c) FROM ciudad_table c WHERE c.nombre = 'Caracas'));
+  
+
+  INSERT INTO via_table(
+  nombre,                  
+  tipo,
+  tiposTransporte,           
+  inicioLatitud,             
+  inicioLongitud,            
+  finLatitud,                
+  finLongintud,             
+  rutasPresentes, 
+  todoRuta,  -- NESTED TABLE QUE SE DEBE BORRADA.
+  seEncuentraEn
+  )VALUES(
+  'MariPerez',
+  'calle',
+   multis_t(multi_t('taxi')),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   0,
+   NULL,
+   (SELECT REF(c) FROM ciudad_table c WHERE c.nombre = 'Caracas'));
+  
+  INSERT INTO via_table(
+  nombre,                  
+  tipo,
+  tiposTransporte,           
+  inicioLatitud,             
+  inicioLongitud,            
+  finLatitud,                
+  finLongintud,             
+  rutasPresentes, 
+  todoRuta,  -- NESTED TABLE QUE SE DEBE BORRADA.
+  seEncuentraEn
+  )VALUES(
+  'BellasArtes',
+  'calle',
+   multis_t(multi_t('taxi')),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   0,
+   NULL,
+   (SELECT REF(c) FROM ciudad_table c WHERE c.nombre = 'Caracas'));
+  
+
+
+--HITOS
+
   INSERT INTO hito_table(
     nombre, 
     latitud,
@@ -225,35 +302,429 @@ INSERT INTO via_table(
     edadApropiada,
     paginaweb,
     telefono,
-    email ,
-    foto,
-    horario,
+    email,
     tarifadescuento,
     costoTicketMonedaLocal,   
-    contiene,
-    rutaEnRefs
+    foto,
+    horario,
+    contieneRef,               
+    rutaEnRefs,               
+    contieneNT           
     )VALUES(
-    'MuseoArtesModernas',
-    coordenada_t(45,66,89),
-    coordenada_t(34,45,12),
-    coordenada_t(35,45,12),
-    'Muy bueno este museo.Arte',
+    'UniversidadSimonBolivar',
+    coordenada_t(105,66,89),
+    coordenada_t(34,106,12),
+    coordenada_t(35,106,12),
+    'Universidad de prestigio.',
     'disponible',
     multis_t(multi_t('Historia'),multi_t('Musica')),
     18,
     'www.museoartesmodernas.com',
     telefono_t(0212,7777777),
     'museomoderno@gmail.com',
-    NULL,
-    ' Lunes-Viernes 8:30 - 12:30 pm',
-    ' Estudiante : gratis. Adulto: 50 Bsf. Nino : 30 bsf',
+   ' Estudiante : gratis. Adulto: 50 Bsf. Nino : 30 bsf',
     50,
     NULL,
+   'Lunes-Viernes 8:30 - 12:30 pm',
+    NULL,
+    NULL,
     NULL);
-  
-  
+
+
+  INSERT INTO hito_table(
+    nombre, 
+    latitud,
+    longitud,
+    altitud,
+    descripcion,
+    estado,
+    categoria,
+    edadApropiada,
+    paginaweb,
+    telefono,
+    email,
+    tarifadescuento,
+    costoTicketMonedaLocal,   
+    foto,
+    horario,
+    contieneRef,               
+    rutaEnRefs,               
+    contieneNT           
+    )VALUES(
+    'MuseoArtesModernos',
+    coordenada_t(105,66,89),
+    coordenada_t(34,106,12),
+    coordenada_t(35,106,12),
+    'Universidad de prestigio.',
+    'disponible',
+    multis_t(multi_t('Historia'),multi_t('Musica')),
+    18,
+    'www.museoartesmodernas.com',
+    telefono_t(0212,7777777),
+    'museomoderno@gmail.com',
+   ' Estudiante : gratis. Adulto: 50 Bsf. Nino : 30 bsf',
+    50,
+    NULL,
+   'Lunes-Viernes 8:30 - 12:30 pm',
+    NULL,
+    NULL,
+    NULL);
+
+INSERT INTO hito_table(
+    nombre, 
+    latitud,
+    longitud,
+    altitud,
+    descripcion,
+    estado,
+    categoria,
+    edadApropiada,
+    paginaweb,
+    telefono,
+    email,
+    tarifadescuento,
+    costoTicketMonedaLocal,   
+    foto,
+    horario,
+    contieneRef,               
+    rutaEnRefs,               
+    contieneNT           
+    )VALUES(
+    'PuebloElHAtillo',
+    coordenada_t(105,66,89),
+    coordenada_t(34,106,12),
+    coordenada_t(35,106,12),
+    'Universidad de prestigio.',
+    'disponible',
+    multis_t(multi_t('Historia'),multi_t('Musica')),
+    18,
+    'www.museoartesmodernas.com',
+    telefono_t(0212,7777777),
+    'museomoderno@gmail.com',
+   ' Estudiante : gratis. Adulto: 50 Bsf. Nino : 30 bsf',
+    50,
+    NULL,
+   'Lunes-Viernes 8:30 - 12:30 pm',
+    NULL,
+    NULL,
+    NULL);
+
+
+
+INSERT INTO hito_table(
+    nombre, 
+    latitud,
+    longitud,
+    altitud,
+    descripcion,
+    estado,
+    categoria,
+    edadApropiada,
+    paginaweb,
+    telefono,
+    email,
+    tarifadescuento,
+    costoTicketMonedaLocal,   
+    foto,
+    horario,
+    contieneRef,               
+    rutaEnRefs,               
+    contieneNT           
+    )VALUES(
+    'HogarDeLaFelicidad',
+    coordenada_t(105,66,89),
+    coordenada_t(34,106,12),
+    coordenada_t(35,106,12),
+    'Universidad de prestigio.',
+    'disponible',
+    multis_t(multi_t('Historia'),multi_t('Musica')),
+    18,
+    'www.museoartesmodernas.com',
+    telefono_t(0212,7777777),
+    'museomoderno@gmail.com',
+   ' Estudiante : gratis. Adulto: 50 Bsf. Nino : 30 bsf',
+    50,
+    NULL,
+   'Lunes-Viernes 8:30 - 12:30 pm',
+    NULL,
+    NULL,
+    NULL);
+
+
+INSERT INTO hito_table(
+    nombre, 
+    latitud,
+    longitud,
+    altitud,
+    descripcion,
+    estado,
+    categoria,
+    edadApropiada,
+    paginaweb,
+    telefono,
+    email,
+    tarifadescuento,
+    costoTicketMonedaLocal,   
+    foto,
+    horario,
+    contieneRef,               
+    rutaEnRefs,               
+    contieneNT           
+    )VALUES(
+    'ElAvila',
+    coordenada_t(105,66,89),
+    coordenada_t(34,106,12),
+    coordenada_t(35,106,12),
+    'Universidad de prestigio.',
+    'disponible',
+    multis_t(multi_t('Historia'),multi_t('Musica')),
+    18,
+    'www.museoartesmodernas.com',
+    telefono_t(0212,7777777),
+    'museomoderno@gmail.com',
+   ' Estudiante : gratis. Adulto: 50 Bsf. Nino : 30 bsf',
+    50,
+    NULL,
+   'Lunes-Viernes 8:30 - 12:30 pm',
+    NULL,
+    NULL,
+    NULL);
+
+
+INSERT INTO hito_table(
+    nombre, 
+    latitud,
+    longitud,
+    altitud,
+    descripcion,
+    estado,
+    categoria,
+    edadApropiada,
+    paginaweb,
+    telefono,
+    email,
+    tarifadescuento,
+    costoTicketMonedaLocal,   
+    foto,
+    horario,
+    contieneRef,               
+    rutaEnRefs,               
+    contieneNT           
+    )VALUES(
+    'IglesiaCatolica',
+    coordenada_t(105,66,89),
+    coordenada_t(34,106,12),
+    coordenada_t(35,106,12),
+    'Universidad de prestigio.',
+    'disponible',
+    multis_t(multi_t('Historia'),multi_t('Musica')),
+    18,
+    'www.museoartesmodernas.com',
+    telefono_t(0212,7777777),
+    'museomoderno@gmail.com',
+   ' Estudiante : gratis. Adulto: 50 Bsf. Nino : 30 bsf',
+    50,
+    NULL,
+   'Lunes-Viernes 8:30 - 12:30 pm',
+    NULL,
+    NULL,
+    NULL);
+
+
+INSERT INTO hito_table(
+    nombre, 
+    latitud,
+    longitud,
+    altitud,
+    descripcion,
+    estado,
+    categoria,
+    edadApropiada,
+    paginaweb,
+    telefono,
+    email,
+    tarifadescuento,
+    costoTicketMonedaLocal,   
+    foto,
+    horario,
+    contieneRef,               
+    rutaEnRefs,               
+    contieneNT           
+    )VALUES(
+    'ElAvila',
+    coordenada_t(105,66,89),
+    coordenada_t(34,106,12),
+    coordenada_t(35,106,12),
+    'Universidad de prestigio.',
+    'disponible',
+    multis_t(multi_t('Historia'),multi_t('Musica')),
+    18,
+    'www.museoartesmodernas.com',
+    telefono_t(0212,7777777),
+    'museomoderno@gmail.com',
+   ' Estudiante : gratis. Adulto: 50 Bsf. Nino : 30 bsf',
+    50,
+    NULL,
+   'Lunes-Viernes 8:30 - 12:30 pm',
+    NULL,
+    NULL,
+    NULL);
+
+
+INSERT INTO hito_table(
+    nombre, 
+    latitud,
+    longitud,
+    altitud,
+    descripcion,
+    estado,
+    categoria,
+    edadApropiada,
+    paginaweb,
+    telefono,
+    email,
+    tarifadescuento,
+    costoTicketMonedaLocal,   
+    foto,
+    horario,
+    contieneRef,               
+    rutaEnRefs,               
+    contieneNT           
+    )VALUES(
+    'HermandadGallega',
+    coordenada_t(105,66,89),
+    coordenada_t(34,106,12),
+    coordenada_t(35,106,12),
+    'Universidad de prestigio.',
+    'disponible',
+    multis_t(multi_t('Historia'),multi_t('Musica')),
+    18,
+    'www.museoartesmodernas.com',
+    telefono_t(0212,7777777),
+    'museomoderno@gmail.com',
+   ' Estudiante : gratis. Adulto: 50 Bsf. Nino : 30 bsf',
+    50,
+    NULL,
+   'Lunes-Viernes 8:30 - 12:30 pm',
+    NULL,
+    NULL,
+    NULL);
+
 
   
+INSERT INTO hito_table(
+    nombre, 
+    latitud,
+    longitud,
+    altitud,
+    descripcion,
+    estado,
+    categoria,
+    edadApropiada,
+    paginaweb,
+    telefono,
+    email,
+    tarifadescuento,
+    costoTicketMonedaLocal,   
+    foto,
+    horario,
+    contieneRef,               
+    rutaEnRefs,               
+    contieneNT           
+    )VALUES(
+    'MuseoDeCaracas',
+    coordenada_t(105,66,89),
+    coordenada_t(34,106,12),
+    coordenada_t(35,106,12),
+    'Universidad de prestigio.',
+    'disponible',
+    multis_t(multi_t('Historia'),multi_t('Musica')),
+    18,
+    'www.museoartesmodernas.com',
+    telefono_t(0212,7777777),
+    'museomoderno@gmail.com',
+   ' Estudiante : gratis. Adulto: 50 Bsf. Nino : 30 bsf',
+    50,
+    NULL,
+   'Lunes-Viernes 8:30 - 12:30 pm',
+    NULL,
+    NULL,
+    NULL);
+
+
+  
+INSERT INTO hito_table(
+    nombre, 
+    latitud,
+    longitud,
+    altitud,
+    descripcion,
+    estado,
+    categoria,
+    edadApropiada,
+    paginaweb,
+    telefono,
+    email,
+    tarifadescuento,
+    costoTicketMonedaLocal,   
+    foto,
+    horario,
+    contieneRef,               
+    rutaEnRefs,               
+    contieneNT           
+    )VALUES(
+    'MuseoBellasArtes',
+    coordenada_t(105,66,89),
+    coordenada_t(34,106,12),
+    coordenada_t(35,106,12),
+    'Universidad de prestigio.',
+    'disponible',
+    multis_t(multi_t('Historia'),multi_t('Musica')),
+    18,
+    'www.museoartesmodernas.com',
+    telefono_t(0212,7777777),
+    'museomoderno@gmail.com',
+   ' Estudiante : gratis. Adulto: 50 Bsf. Nino : 30 bsf',
+    50,
+    NULL,
+   'Lunes-Viernes 8:30 - 12:30 pm',
+    NULL,
+    NULL,
+    NULL);
+
+
+
+
+
+
+
+
+
+
+  INSERT INTO via_table(
+  nombre,                  
+  tipo,
+  tiposTransporte,           
+  inicioLatitud,             
+  inicioLongitud,            
+  finLatitud,                
+  finLongintud,             
+  rutasPresentes, 
+  todoRuta,  -- NESTED TABLE QUE SE DEBE BORRADA.
+  seEncuentraEn
+  )VALUES(
+  'viaSantisimaTrinidad',
+  'calle',
+   multis_t(multi_t('taxi')),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   coordenada_t(45,67,89),
+   0,
+   NULL,
+   (SELECT REF(c) FROM ciudad_table c WHERE c.nombre = 'Caracas'));
+  
+
   INSERT INTO ruta_Table(
   nombre,
   inicioLatitud,             
@@ -281,8 +752,7 @@ INSERT INTO via_table(
   (SELECT REF(ciudad) FROM ciudad_table ciudad WHERE ciudad.nombre = 'Caracas'),
   (SELECT REF(hito) FROM hito_table hito WHERE hito.nombre = 'MuseoArtesModernas'));
   
--- Esto ya no.
-INSERT INTO ruta_Table(
+ INSERT INTO ruta_Table(
   nombre,
   inicioLatitud,             
   inicioLongitud,            
@@ -296,7 +766,7 @@ INSERT INTO ruta_Table(
   estaEn,
   rutaEn
   )VALUES(
-  'RutaMargarita',
+  'RutaUSB',
   coordenada_t(34,45,56),
   coordenada_t(45,45,67),
   coordenada_t(23,45,67),
@@ -305,30 +775,114 @@ INSERT INTO ruta_Table(
   'dinamica',
   '01-APR-2013',
   'Esta ruta tiene cosas interesantes',
-  NULL,
+  refs_to_via(ref_to_via((SELECT REF(viacreada) FROM via_table viacreada WHERE viacreada.nombre = 'HoyoDeLaPuerta'))),
   (SELECT REF(ciudad) FROM ciudad_table ciudad WHERE ciudad.nombre = 'Caracas'),
-  (SELECT REF(hito) FROM hito_table hito WHERE hito.nombre = 'MuseoArtesModernas')
-  );
-  
-  
-CREATE or REPLACE TRIGGER ActualizarVia
-AFTER INSERT
-   ON ruta_table
-   [ FOR EACH ROW ]
+  NULL);
 
-DECLARE
-    cursos
 
-BEGIN
-   Recorrer la nested table y por cada via, actualizar el atributo que asocia el numero de vias
 
-EXCEPTION
-   WHEN ...
-   -- exception handling
+ INSERT INTO ruta_Table(
+  nombre,
+  inicioLatitud,             
+  inicioLongitud,            
+  finLatitud,               
+  finLongitud,               
+  cantidadVisitas,          
+  tipo,                     
+  fechaIngreso,             
+  descripcion,               
+  partesVia,                 
+  estaEn,
+  rutaEn
+  )VALUES(
+  'RutaAvila',
+  coordenada_t(34,45,56),
+  coordenada_t(45,45,67),
+  coordenada_t(23,45,67),
+  coordenada_t(12,34,12),
+  4,
+  'dinamica',
+  '01-APR-2013',
+  'Esta ruta tiene cosas interesantes',
+  refs_to_via(ref_to_via((SELECT REF(viacreada) FROM via_table viacreada WHERE viacreada.nombre = 'HoyoDeLaPuerta'))),
+  (SELECT REF(ciudad) FROM ciudad_table ciudad WHERE ciudad.nombre = 'Caracas'),
+  NULL);
 
-END;
-  
-  
+
+
+ INSERT INTO ruta_Table(
+  nombre,
+  inicioLatitud,             
+  inicioLongitud,            
+  finLatitud,               
+  finLongitud,               
+  cantidadVisitas,          
+  tipo,                     
+  fechaIngreso,             
+  descripcion,               
+  partesVia,                 
+  estaEn,
+  rutaEn
+  )VALUES(
+  'RutaMuseoCaracas',
+  coordenada_t(34,45,56),
+  coordenada_t(45,45,67),
+  coordenada_t(23,45,67),
+  coordenada_t(12,34,12),
+  4,
+  'dinamica',
+  '01-APR-2013',
+  'Esta ruta tiene cosas interesantes',
+  refs_to_via(ref_to_via((SELECT REF(viacreada) FROM via_table viacreada WHERE viacreada.nombre = 'Tazon'))),
+  (SELECT REF(ciudad) FROM ciudad_table ciudad WHERE ciudad.nombre = 'Caracas'),
+  NULL);
+
+
+
+
+
+
+Update ciudad_table Set seEncuentraEnRefs = refs_to_via(ref_to_via((SELECT REF(viacreada) FROM via_table viacreada WHERE viacreada.nombre = 'HoyoDeLaPuerta'))) where nombre='Caracas';
+Update ciudad_table Set seEncuentraEnRefs = refs_to_via(ref_to_via((SELECT REF(viacreada) FROM via_table viacreada WHERE viacreada.nombre = 'ElHatillo'))) where nombre='Caracas';
+Update ciudad_table Set seEncuentraEnRefs = refs_to_via(ref_to_via((SELECT REF(viacreada) FROM via_table viacreada WHERE viacreada.nombre = 'LaNuezDeAdan'))) where nombre='Caracas';
+Update ciudad_table Set seEncuentraEnRefs = refs_to_via(ref_to_via((SELECT REF(viacreada) FROM via_table viacreada WHERE viacreada.nombre = 'Tazon'))) where nombre='Caracas';
+Update ciudad_table Set seEncuentraEnRefs = refs_to_via(ref_to_via((SELECT REF(viacreada) FROM via_table viacreada WHERE viacreada.nombre = 'LaPared'))) where nombre='Caracas';
+Update ciudad_table Set seEncuentraEnRefs = refs_to_via(ref_to_via((SELECT REF(viacreada) FROM via_table viacreada WHERE viacreada.nombre = 'MariPerez'))) where nombre='Caracas';
+Update ciudad_table Set seEncuentraEnRefs = refs_to_via(ref_to_via((SELECT REF(viacreada) FROM via_table viacreada WHERE viacreada.nombre = 'ElCandado'))) where nombre='Caracas';
+Update ciudad_table Set seEncuentraEnRefs = refs_to_via(ref_to_via((SELECT REF(viacreada) FROM via_table viacreada WHERE viacreada.nombre = 'BellasArtes'))) where nombre='Caracas';
+
+Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaMargarita'))) where nombre='MuseoArtesModernas';
+Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaMargarita'))) where nombre='UniversidadSimonBolivar';                         
+
+
+Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaAvila'))) where nombre='ElAvila';  
+Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaAvila'))) where nombre='IglesiaCatolica';  
+Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaAvila'))) where nombre='HermandadGallega';  
+
+
+
+Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaUSB'))) where nombre='UniversidadSimonBolivar';  
+
+Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaUSB'))) where nombre='PuebloElHAtillo';  
+
+Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaUSB'))) where nombre='HogarDeLaFelicidad';  
+
+
+Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaMuseoCaracas'))) where nombre='MuseoArtesModernos';  
+Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaMuseoCaracas'))) where nombre='MuseoDeCaracas'; 
+
+Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaMuseoCaracas'))) where nombre='MuseoBellasArtes'; 
+
+
+
+
+
+
+-- NO SE SI COMO S UNA NESTED, SE JODE.
+-- SEGUN ESTO. Ya en ciudad tenemos todas las vías que hay.
+-- Por ruta, ya ciudad tiene todas las rutas que tiene
+-- Los hitos tienes una nestescon las rutas que pertenecen en el.
+
   
   
   
