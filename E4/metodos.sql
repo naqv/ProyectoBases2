@@ -3,25 +3,18 @@
 
 ------------ listarEvento -------------------------------------------
 
-CREATE OR REPLACE PROCEDURE listarEventos (nombreHito VARCHAR)   
+CREATE OR REPLACE PROCEDURE listarEventos (nombreHito VARCHAR) AS   
     CURSOR evento_cursor IS
        SELECT   nombre       
        FROM     evento_table e
-       WHERE    DEREF(e.ocurre).nombre = nombreHito; /* Esto debe cambiar a 
-                                                      * self.nombre         
-                                                      */
+       WHERE    e.ocurre.nombre = nombreHito;
+       --;
 
     BEGIN
 
-        evento_cursor IS
-            SELECT   nombre       
-            FROM     evento_table e
-            WHERE    DEREF(e.ocurre).nombre = nombreHito;
-
-        OPEN evento_cursor;
         FOR eventoNombre IN evento_cursor
         LOOP
-            DBMS_OUTPUT.put_line(eventoNombre);
+            DBMS_OUTPUT.put_line(eventoNombre.nombre);
         END LOOP;
 
     END;

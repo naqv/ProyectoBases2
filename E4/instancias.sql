@@ -351,7 +351,7 @@ INSERT INTO via_table(
     rutaEnRefs,               
     contieneNT           
     )VALUES(
-    'MuseoArtesModernos',
+    'MuseoArtesModernas',
     coordenada_t(105,66,89),
     coordenada_t(34,106,12),
     coordenada_t(35,106,12),
@@ -837,39 +837,59 @@ INSERT INTO hito_table(
   (SELECT REF(ciudad) FROM ciudad_table ciudad WHERE ciudad.nombre = 'Caracas'),
   NULL);
 
-  INSERT INTO evento_table(
-  nombre,                    
-  categoria,                 
-  costoMonedaLocal,         
-  descripcion,              
-  fechaInicio,               
-  fechaFin,                  
-  ocurre)VALUES(
-  'LadyGagaConcierto',
-  'musical',
-  50,
-  'muy interesante',
-  '01-APR-2013',
-  '03-APR-2013',
-  (SELECT REF(hito) FROM hito_table hito WHERE hito.nombre = 'MuseoArtesModernas'));
+INSERT INTO evento_table(
+    nombre,                    
+    categoria,                 
+    costoMonedaLocal,         
+    descripcion,              
+    fechaInicio,               
+    fechaFin,                  
+    ocurre)VALUES(
+    'Juana de arco',
+    'musical',
+    50,
+    'Obra feminista.',
+    '01-APR-2013',
+    '03-APR-2013',
+    (SELECT REF(hito) FROM hito_table hito WHERE hito.nombre = 'MuseoArtesModernas')
+);
   
   
-    INSERT INTO evento_table(
-  nombre,                    
-  categoria,                 
-  costoMonedaLocal,         
-  descripcion,              
-  fechaInicio,               
-  fechaFin,                  
-  ocurre
-  )VALUES(
-  'Circo',
-  'musical',
-  50,
-  'muy interesante',
-  '01-APR-2013',
-  '03-APR-2013',
-  (SELECT REF(hito) FROM hito_table hito WHERE hito.nombre = 'MuseoArtesModernas'));
+INSERT INTO evento_table(
+    nombre,                    
+    categoria,                 
+    costoMonedaLocal,         
+    descripcion,              
+    fechaInicio,               
+    fechaFin,                  
+    ocurre
+    )VALUES(
+    'El fin de los tiempos',
+    'musical',
+    50,
+    'Excelente pelicula venezolana.',
+    '10-APR-2013',
+    '20-APR-2013',
+    (SELECT REF(hito) FROM hito_table hito WHERE hito.nombre = 'MuseoArtesModernas')
+);
+
+INSERT INTO evento_table(
+    nombre,                    
+    categoria,                 
+    costoMonedaLocal,         
+    descripcion,              
+    fechaInicio,               
+    fechaFin,                  
+    ocurre
+    )VALUES(
+    'Jornada de siembra de arboles',
+    'social',
+    10,
+    'Se cubrira toda la zona este.',
+    '12-APR-2014',
+    '25-APR-2014',
+    (SELECT REF(hito) FROM hito_table hito WHERE hito.nombre = 'HogarDeLaFelicidad')
+);
   
 
 
@@ -901,7 +921,7 @@ Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacrea
 Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaUSB'))) where nombre='HogarDeLaFelicidad';  
 
 
-Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaMuseoCaracas'))) where nombre='MuseoArtesModernos';  
+Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaMuseoCaracas'))) where nombre='MuseoArtesModernas';  
 Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaMuseoCaracas'))) where nombre='MuseoDeCaracas'; 
 
 Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaMuseoCaracas'))) where nombre='MuseoBellasArtes'; 
