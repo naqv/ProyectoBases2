@@ -53,9 +53,9 @@ hito_prueba hito_t;
 BEGIN
 
 select * INTO hito_prueba
-FROM hito_table h
-WHERE h.nombre ='MuseoArtesModernas';
-execute hito_prueba.listarEventos);
+FROM hito_table 
+WHERE nombre ='MuseoArtesModernas';
+CALL hito_prueba.listarEventos;
 
 END;
 /
