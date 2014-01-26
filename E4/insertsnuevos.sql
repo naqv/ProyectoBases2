@@ -907,12 +907,6 @@ Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacrea
 Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaMuseoCaracas'))) where nombre='MuseoBellasArtes'; 
 
 
-CREATE OR REPLACE TYPE agr_hito_t AS OBJECT(
-  ruta                      REF ruta_t,
-  hito                      REF hito_t
-);
-/
-
 
 
   INSERT INTO agr_hito_table(

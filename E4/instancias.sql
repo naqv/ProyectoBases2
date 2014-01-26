@@ -892,9 +892,6 @@ INSERT INTO evento_table(
 );
   
 
-
-
-
 Update ciudad_table Set seEncuentraEnRefs = refs_to_via(ref_to_via((SELECT REF(viacreada) FROM via_table viacreada WHERE viacreada.nombre = 'HoyoDeLaPuerta'))) where nombre='Caracas';
 Update ciudad_table Set seEncuentraEnRefs = refs_to_via(ref_to_via((SELECT REF(viacreada) FROM via_table viacreada WHERE viacreada.nombre = 'ElHatillo'))) where nombre='Caracas';
 Update ciudad_table Set seEncuentraEnRefs = refs_to_via(ref_to_via((SELECT REF(viacreada) FROM via_table viacreada WHERE viacreada.nombre = 'LaNuezDeAdan'))) where nombre='Caracas';
@@ -927,8 +924,12 @@ Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacrea
 Update hito_table Set rutaEnRefs = refs_to_ruta(ref_to_ruta((SELECT REF(rutacreada) FROM ruta_table rutacreada WHERE rutacreada.nombre = 'RutaMuseoCaracas'))) where nombre='MuseoBellasArtes'; 
 
 
-
-
+  INSERT INTO agr_hito_table(
+  ruta,
+  hito
+  )VALUES(
+  (SELECT REF(ruta) FROM ruta_table ruta WHERE ruta.nombre = 'RutaUSB'),
+  (SELECT REF(hito) FROM hito_table hito WHERE hito.nombre = 'UniversidadSimonBolivar'));
 
 
 -- NO SE SI COMO S UNA NESTED, SE JODE.
