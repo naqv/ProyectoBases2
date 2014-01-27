@@ -63,6 +63,13 @@ END;
 
 -- Trigger 1: Se agrega en Via un atributo derivado que es el número de rutas que la tienen. El trigger sería actualizar ese valor.
 
+
+
+
+
+
+
+
 CREATE or REPLACE TRIGGER Num_Rutas_En_Via_Trigger
 AFTER INSERT 
     ON ruta_table
