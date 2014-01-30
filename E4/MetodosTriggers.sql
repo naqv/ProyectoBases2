@@ -1,6 +1,5 @@
 ------------------------------ METODOS ------------------------------
 
-
 ------------ listarEvento -------------------------------------------
 
 CREATE OR REPLACE PROCEDURE listarEventos (nombreHito VARCHAR) AS   
@@ -38,7 +37,10 @@ CREATE OR REPLACE TYPE BODY hito_t AS
     END;
 END;
 /
-------------------- Eliminar_paquetes_ruta --------------------------
+
+------------------------------ TRIGGERS -----------------------------
+
+------------ Eliminar_Paquetes_ruta ---------------------------------
 
 CREATE VIEW rutasconpaquetes AS SELECT * FROM ruta_Table ;
 
