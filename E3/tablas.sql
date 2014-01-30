@@ -67,9 +67,6 @@ CREATE TABLE paquete_table OF paquete_t(
 
 ---------- TABLAS ASOCIACIONES BINARIAS -----------------------------
 
-CREATE TABLE contrata_table OF contrata_t(
-    FOREIGN KEY(paquete) references paquete_table,
-    FOREIGN KEY(usuario) references usuario_table);
 
 CREATE TABLE SeAccedePor_table OF SeAccedePor(
     FOREIGN KEY(hito) references hito_table,

@@ -1,3 +1,6 @@
+
+ALTER SESSION SET NLS_DATE_FORMAT = 'dd-mm-YYYY';
+
 CREATE OR REPLACE TYPE acompanante_t AS OBJECT(
   tipo                      VARCHAR(30),
   numero                    INTEGER(10)
@@ -131,8 +134,8 @@ CREATE OR REPLACE TYPE hito_t AS OBJECT(
   horario                   VARCHAR(50),
   contieneRef               REF hito_t,
   rutaEnRefs                refs_to_ruta,
-  MEMBER FUNCTION calcularCostoEnUSD (relacionLocalUSD IN NUMERIC) RETURN NUMERIC
-  --MEMBER FUNCTION listarEventos RETURN CURSOR,
+  MEMBER FUNCTION calcularCostoEnUSD RETURN NUMERIC
+--  MEMBER PROCEDURE listarEventos
   --MEMBER FUNCTION hitosCategoria(categoria IN VARCHAR) RETURN CURSOR,
   --MEMBER FUNCTION hitosCategoriaCiudad(categoria IN VARCHAR, ciudad IN VARCHAR) RETURN CURSOR,
   --MEMBER FUNCTION hitosEstadoCiudad(estado IN VARCHAR, ciudad IN VARCHAR) RETURN CURSOR,
@@ -224,13 +227,6 @@ CREATE OR REPLACE TYPE paquete_t AS OBJECT(
 );
 / 
 
-CREATE OR REPLACE TYPE contrata_t AS OBJECT (
-  companero                 acompanantes_t,
-  paquete                   REF paquete_t,
-  usuario                   REF usuario_t,
-  MEMBER FUNCTION CalcularPrecioTotal RETURN NUMERIC
-);
- /
 
 CREATE OR REPLACE TYPE SeAccedePor AS OBJECT(
   hito                      REF hito_t,

@@ -38,3 +38,53 @@ CREATE OR REPLACE TYPE BODY hito_t AS
     END;
 END;
 /
+------------------- Eliminar_paquetes_ruta --------------------------
+
+CREATE VIEW rutasconpaquetes AS SELECT * FROM ruta_Table ;
+
+
+CREATE or REPLACE TRIGGER Eliminar_Paquetes_ruta
+    INSTEAD OF DELETE ON rutasconpaquetes
+    FOR EACH ROW
+ 
+    DECLARE
+     
+    BEGIN
+
+           DELETE FROM paquete_table t
+           WHERE DEREF(t.incluye).nombre= (:OLD.nombre) ;
+           
+           DELETE FROM ruta_Table rt
+           WHERE rt.nombre=:OLD.nombre;
+
+    END;
+/
+
+
+
+-------------------------- Pruebas ----------------------------------
+
+execute listarEventos('MuseoArtesModernas');
+
+SELECT h.calcularCostoEnUSD()
+FROM hito_table h
+WHERE h.nombre='MuseoBellasArtes';	
+
+DELETE FROM rutasconpaquetes r WHERE r.nombre='RutaNueva';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

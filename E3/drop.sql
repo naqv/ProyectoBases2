@@ -1,6 +1,4 @@
 ---------------------------- Eliminar tablas ------------------------
-
-DROP TABLE 	contrata_table;
 DROP TABLE 	seaccedepor_table;
 DROP TABLE 	tiene_table;
 DROP TABLE 	tieneservicio_table;
@@ -23,12 +21,12 @@ DROP TABLE 	coordenada_table;
 DROP TABLE 	boolean_table;
 DROP TABLE 	nombres_table;
 
+
 PURGE RECYCLEBIN;
 
 
 ---------------------------- Eliminar tipos -------------------------
 
-DROP TYPE 	contrata_t;
 DROP TYPE 	SeAccedePor;
 DROP TYPE 	Tiene;
 DROP TYPE 	TieneServicio;
@@ -69,3 +67,6 @@ DROP TYPE 	ref_to_evento;
 
 DROP TYPE 	refs_to_via;
 DROP TYPE 	ref_to_via;
+
+drop procedure listareventos;
+drop view rutasconpaquetes;
